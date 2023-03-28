@@ -11,7 +11,6 @@ public class Game {
     private final ArrayList<String> categoryList, mechanicList;
 //    private final ArrayList<Review> reviewList;
 
-
     /**
      * Constructs a Game with all of its data
      * @param id the Game's id
@@ -57,6 +56,38 @@ public class Game {
     }
 
     /**
+     * Returns the Game's ID
+     * @return The game's description as a String
+     */
+    public int getID() {
+        return id;
+    }
+
+    /**
+     * Returns the BGG thumbnail image link
+     * @return the BGG thumbnail image link
+     */
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    /**
+     * Returns the BGG full size image link
+     * @return the BGG full size image link
+     */
+    public String getFullSizeImage() {
+        return fullSizeImage;
+    }
+
+    /**
+     * Returns the Game's name
+     * @return the Game's name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Returns the Game's description as a String
      * @return The game's description as a String
      */
@@ -64,4 +95,51 @@ public class Game {
         return description;
     }
 
+    /**
+     * Returns the Game's year of publishing
+     * @return the Game's year of publishing
+     */
+    public int getYearPublished() {
+        return yearPublished;
+    }
+
+    /**
+     * Returns the Game's recommended minimum players
+     * @return the Game's recommended minimum players
+     */
+    public int getMinPlayers() {
+        return minPlayers;
+    }
+
+    /**
+     * Returns the Game's recommended maximum players
+     * @return the Game's recommended maximum players
+     */
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    /**
+     * Returns the Game's suggested playing time
+     * @return the Game's suggested playing time
+     */
+    public int getPlayingTime() {
+        return playingTime;
+    }
+
+    /**
+     * Returns the Game's list of categories on BGG
+     * @return the Game's list of categories on BGG
+     */
+    public ArrayList<String> getCategoryList() {
+        return categoryList;
+    }
+
+    /**
+     * Returns the Game's list of game mechanics on BGG
+     * @return the Game's list of game mechanics on BGG
+     */
+    public ArrayList<String> getMechanicList() {
+        return mechanicList;
+    }
 }
