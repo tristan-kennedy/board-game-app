@@ -9,7 +9,8 @@ public class Game {
     private final int minPlayers, maxPlayers;
     private final int playingTime;
     private final ArrayList<String> categoryList, mechanicList;
-//    private final ArrayList<Review> reviewList;
+    private float rating;
+    private final ArrayList<Review> reviewList;
 
     /**
      * Constructs a Game with all of its data
@@ -37,12 +38,17 @@ public class Game {
         this.playingTime = playingTime;
         this.categoryList = categoryList;
         this.mechanicList = mechanicList;
-//        this.reviewList = new ArrayList<>();
+        this.rating = 0;
+        this.reviewList = new ArrayList<>();
     }
 
-//    public void addReview(Review r) {
-//        reviewList.add(r);
-//    }
+    /**
+     * Adds a Review to the reviewList
+     * @param r the Review to be added
+     */
+    public void addReview(Review r) {
+        reviewList.add(r);
+    }
 
     /**
      * Returns the Game as a multi-line string containing all of its information
@@ -142,4 +148,6 @@ public class Game {
     public ArrayList<String> getMechanicList() {
         return mechanicList;
     }
+
+    public float getRating() { return rating; }
 }
