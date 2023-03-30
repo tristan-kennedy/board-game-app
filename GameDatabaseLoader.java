@@ -13,7 +13,7 @@ import javax.xml.stream.events.XMLEvent;
 
 
 /**
- * Loads the game data from a Board Game Geeks XML file into a GameList of Game objects for use elsewhere
+ * Loads the game data from a Board Game Geek XML file into a GameList of Game objects for use elsewhere
  */
 public class GameDatabaseLoader {
 
@@ -53,14 +53,13 @@ public class GameDatabaseLoader {
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 
             // Iterates through XML elements as "events"
-            // StartElement (opening <> tag, contains attribtutes)
+            // StartElement (opening <> tag, contains attritutes)
             // Characters (contains characters between <> tags
             // EndElement (closing </> tag)
             XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(gameFilepath));
 
             // Loop through the entire XML file
             while(eventReader.hasNext()) {
-
 
                 XMLEvent event = eventReader.nextEvent();
 
@@ -89,7 +88,11 @@ public class GameDatabaseLoader {
                         }
 
                         // <name value="name"/>
-                        case "name" -> name = element.getAttributeByName(new QName("value")).getValue().trim();
+                        case "name" -> {
+                            // Make sure we're only using the "primary" name
+                            if (element.getAttributeByName(new QName("type")).getValue().equals("primary"))
+                                name = element.getAttributeByName(new QName("value")).getValue().trim();
+                        }
 
                         // <description>
                         case "description" -> {
