@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class GameList implements Iterable<Game> {
 
-    private final ArrayList<Game> gameList;
+    protected ArrayList<Game> gameList;
     private final HashMap<Integer, Game> gameMap;
 
     /**

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BoardGameAppUserData>
+    <userList>
+        <user password="abc123" userName="TestUser">
+            <gameCollection name="TestCollection">
+                <game id="321608"/>
+            </gameCollection>
+            <gameCollection name="ThisIsAnotherCollection">
+                <game id="321608"/>
+            </gameCollection>
+        </user>
+    </userList>
+    <reviewList/>
+</BoardGameAppUserData>

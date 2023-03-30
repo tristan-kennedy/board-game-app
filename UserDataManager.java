@@ -25,35 +25,11 @@ public class UserDataManager {
 
     public UserDataManager(String userFilepath) {
         this.userFilepath = userFilepath;
+        initializeFile();
         currentUser = new User("Guest", "");
     }
 
-    public void initializeFile() {
-        //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
-        File userDoc = new File(userFilepath);
-        try {
-            if (userDoc.length() == 0) {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                // root elements
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("BoardGameAppUserData");
-                doc.appendChild(rootElement);
-
-                Element userList = doc.createElement("userList");
-                rootElement.appendChild(userList);
-                Element reviewList = doc.createElement("reviewList");
-                rootElement.appendChild(reviewList);
-
-                writeXML(doc, userFilepath);
-            }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Boolean login(String userName, String password) {
+    public Boolean login(String userName, String password, GameList mainList) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
@@ -65,6 +41,21 @@ public class UserDataManager {
                 String testPassword = user.getAttributes().getNamedItem("password").getTextContent();
                 if(password.equals(testPassword)){
                     currentUser = new User(userName, password);
+
+                    NodeList gameCollectionList = ((Element) user).getElementsByTagName("gameCollection");
+                    for(int j = 0; j<gameCollectionList.getLength(); j++){
+                        Node gameCollection = gameCollectionList.item(j);
+                        String collectionName = gameCollection.getAttributes().getNamedItem("name").getTextContent();
+                        GameCollection newGameCollection = new GameCollection(collectionName);
+                        NodeList gameList = ((Element) gameCollection).getElementsByTagName("game");
+                        for(int k = 0; k<gameList.getLength(); k++){
+                            Node game = gameList.item(k);
+                            int gameId = Integer.parseInt(game.getAttributes().getNamedItem("id").getTextContent());
+                            newGameCollection.addGame(mainList.getGame(gameId));
+                        }
+                        currentUser.addCollection(newGameCollection);
+                    }
+
                     return true;
                 }
                 else {
@@ -81,10 +72,6 @@ public class UserDataManager {
 
     /* To be implemented once reviews/collections are implemented
     public ArrayList<Review> importReviews(){
-
-    }
-
-    private ArrayList<GameCollection> importCollections(){
 
     }
      */
@@ -121,6 +108,59 @@ public class UserDataManager {
 
     }
      */
+    public void saveGameCollections(){
+        Document doc = initializeXMLDoc(userFilepath);
+
+        NodeList userList = doc.getElementsByTagName("user");
+        for (int i = 0; i<userList.getLength(); i++){
+            Node user = userList.item(i);
+            String testName = user.getAttributes().getNamedItem("userName").getTextContent();
+            if(currentUser.getUserName().equals(testName)){
+                for(GameCollection c : currentUser.getCollectionList()){
+                    Element gameCollection = doc.createElement("gameCollection");
+                    gameCollection.setAttribute("name", c.getName());
+                    for(Game g : c){
+                        Element game = doc.createElement("game");
+                        game.setAttribute("id", Integer.toString(g.getID()));
+                        gameCollection.appendChild(game);
+                    }
+                    user.appendChild(gameCollection);
+                }
+                writeXML(doc, userFilepath);
+                return;
+            }
+        }
+    }
+
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    private void initializeFile() {
+        //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
+        File userDoc = new File(userFilepath);
+        try {
+            if (userDoc.length() == 0) {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                // root elements
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("BoardGameAppUserData");
+                doc.appendChild(rootElement);
+
+                Element userList = doc.createElement("userList");
+                rootElement.appendChild(userList);
+                Element reviewList = doc.createElement("reviewList");
+                rootElement.appendChild(reviewList);
+
+                writeXML(doc, userFilepath);
+            }
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void writeXML(Document doc, String output) {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
