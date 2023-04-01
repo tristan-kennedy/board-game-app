@@ -18,6 +18,7 @@ public class GameList implements Iterable<Game> {
 
     /**
      * Adds a Game to the GameList
+     *
      * @param g the Game to be added
      */
     public void addGame(Game g) {
@@ -27,7 +28,8 @@ public class GameList implements Iterable<Game> {
 
     /**
      * Returns a new list of Games sorted by either name, rating, or max players
-     * @param sortBy The field to sort the Games by: "name", "rating", or "players"
+     *
+     * @param sortBy   The field to sort the Games by: "name", "rating", or "players"
      * @param ordering 1 for ascending, -1 for descending
      * @return a new, sorted list of Games
      */
@@ -59,6 +61,7 @@ public class GameList implements Iterable<Game> {
 
     /**
      * Finds a specific game by ID. Returns null if game not found
+     *
      * @param id the Game's ID
      * @return the Game associated with the ID if found, otherwise null
      */
@@ -69,6 +72,7 @@ public class GameList implements Iterable<Game> {
 
     /**
      * Allows for using foreach loops over the GameList
+     *
      * @return an iterator to the interal ArrayList
      */
     @Override

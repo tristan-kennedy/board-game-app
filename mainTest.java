@@ -1,6 +1,6 @@
 
 public class mainTest {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         GameDatabaseLoader databaseLoader = new GameDatabaseLoader("bgg90Games.xml");
         UserDataManager userDataManager = new UserDataManager("outputxml.xml");

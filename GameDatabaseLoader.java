@@ -21,12 +21,16 @@ public class GameDatabaseLoader {
 
     /**
      * Constructs the loader from a String containing the XML file's filepath
+     *
      * @param gameFilepath the XML file's filepath
      */
-    public GameDatabaseLoader(String gameFilepath) { this.gameFilepath = gameFilepath; }
+    public GameDatabaseLoader(String gameFilepath) {
+        this.gameFilepath = gameFilepath;
+    }
 
     /**
      * Imports all game data from the XML file into a GameList object comprised of individual Games
+     *
      * @param gList the GameList containing all the read-in game data
      */
     public void importGameData(GameList gList) {
@@ -59,7 +63,7 @@ public class GameDatabaseLoader {
             XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(gameFilepath));
 
             // Loop through the entire XML file
-            while(eventReader.hasNext()) {
+            while (eventReader.hasNext()) {
 
                 XMLEvent event = eventReader.nextEvent();
 
@@ -109,16 +113,20 @@ public class GameDatabaseLoader {
                         }
 
                         // <yearpublished value="####"/>
-                        case "yearpublished" -> yearPublished = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
+                        case "yearpublished" ->
+                                yearPublished = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
 
                         // <minplayers value="##"/>
-                        case "minplayers" -> minPlayers = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
+                        case "minplayers" ->
+                                minPlayers = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
 
                         // <maxplayers value="##"/>
-                        case "maxplayers" -> maxPlayers = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
+                        case "maxplayers" ->
+                                maxPlayers = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
 
                         // <playingtime value="###"/>
-                        case "playingtime" -> playingTime = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
+                        case "playingtime" ->
+                                playingTime = Integer.parseInt(element.getAttributeByName(new QName("value")).getValue());
 
                         // <link type="boardgameXXXXXXX" value="XXXXXXXXXXXXX"/>
                         case "link" -> {
@@ -159,9 +167,7 @@ public class GameDatabaseLoader {
                     }
                 }
             }
-        }
-
-        catch (FileNotFoundException | XMLStreamException e) {
+        } catch (FileNotFoundException | XMLStreamException e) {
             System.out.println(e.getMessage());
         }
     }

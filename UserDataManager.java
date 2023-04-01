@@ -22,32 +22,51 @@ public class UserDataManager {
     private final String userFilepath;
     private User currentUser;
 
+    /**
+     * Parameterized constructor which initializes a UserDataManager based upon a filepath
+     *
+     * @param userFilepath String filepath
+     */
     public UserDataManager(String userFilepath) {
         this.userFilepath = userFilepath;
         initializeFile();
         currentUser = new User("Guest", "");
     }
 
+    /**
+     * Login lets a user login based upon a userName and password. Checks to ensure the username/password are correct, populates collections of user.
+     *
+     * @param userName String userName
+     * @param password String password
+     * @param mainList GameList mainList should be the list of all games to populate collections from.
+     * @return Boolean true if login was successful, false otherwise
+     */
     public Boolean login(String userName, String password, GameList mainList) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
+        //Checking if login matches XML saved userNames/passwords
         NodeList userList = doc.getElementsByTagName("user");
-        for(int i = 0; i<userList.getLength(); i++){
+        //This loops through every single user element in the XML document.
+        for (int i = 0; i < userList.getLength(); i++) {
             Node user = userList.item(i);
             String testName = user.getAttributes().getNamedItem("userName").getTextContent();
-            if(userName.equals(testName)){
+            //If the username is a match to what the user entered
+            if (userName.equals(testName)) {
                 String testPassword = user.getAttributes().getNamedItem("password").getTextContent();
-                if(password.equals(testPassword)){
+                //If the password is a match to what the user entered
+                if (password.equals(testPassword)) {
+                    //Creating a new user to be the currentUser with the credentials entered if they match
                     currentUser = new User(userName, password);
 
+                    //Initializing the users collections to the collections that they had saved in the XML.
                     NodeList gameCollectionList = ((Element) user).getElementsByTagName("gameCollection");
-                    for(int j = 0; j<gameCollectionList.getLength(); j++){
+                    for (int j = 0; j < gameCollectionList.getLength(); j++) {
                         Node gameCollection = gameCollectionList.item(j);
                         String collectionName = gameCollection.getAttributes().getNamedItem("name").getTextContent();
                         GameCollection newGameCollection = new GameCollection(collectionName);
                         NodeList gameList = ((Element) gameCollection).getElementsByTagName("game");
-                        for(int k = 0; k<gameList.getLength(); k++){
+                        for (int k = 0; k < gameList.getLength(); k++) {
                             Node game = gameList.item(k);
                             int gameId = Integer.parseInt(game.getAttributes().getNamedItem("id").getTextContent());
                             newGameCollection.addGame(mainList.getGame(gameId));
@@ -55,25 +74,35 @@ public class UserDataManager {
                         currentUser.addCollection(newGameCollection);
                     }
 
+                    //Returns true if there is a matching userName and password
                     return true;
-                }
-                else {
+                } else {
+                    //Returns false if a matching userName is found but password is wrong
                     return false;
                 }
             }
         }
+        //Returns false if no matching userName is found in whole list
         return false;
     }
 
+    /**
+     * Logout sets the currentUser to a Guest user, used to disable collections.
+     */
     public void logout() {
         currentUser = new User("Guest", "");
     }
 
-    public void loadReviews(GameList mainList){
+    /**
+     * Populates all reviews in a GameList via an XML document, uses GameID.
+     *
+     * @param mainList GameList mainList should be the list of all games which need reviews populated
+     */
+    public void loadReviews(GameList mainList) {
         Document doc = initializeXMLDoc(userFilepath);
 
         NodeList reviewList = doc.getElementsByTagName("review");
-        for(int i = 0; i<reviewList.getLength(); i++){
+        for (int i = 0; i < reviewList.getLength(); i++) {
             Node review = reviewList.item(i);
             Integer gameId = Integer.parseInt(review.getAttributes().getNamedItem("id").getTextContent());
             Integer rating = Integer.parseInt(review.getAttributes().getNamedItem("rating").getTextContent());
@@ -87,6 +116,13 @@ public class UserDataManager {
         }
     }
 
+    /**
+     * Creates an account based upon entered Strings, will not allow creation of duplicate usernames, returns false if fails.
+     *
+     * @param userName String userName
+     * @param password String password
+     * @return Boolean true if account creation success, false otherwise
+     */
     public Boolean createAccount(String userName, String password) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
@@ -114,7 +150,12 @@ public class UserDataManager {
         return true;
     }
 
-    public void saveReview(Review review){
+    /**
+     * Saves a review to the XML document
+     *
+     * @param review Review
+     */
+    public void saveReview(Review review) {
         Document doc = initializeXMLDoc(userFilepath);
 
         Element xmlReview = doc.createElement("review");
@@ -131,18 +172,21 @@ public class UserDataManager {
         writeXML(doc, userFilepath);
     }
 
-    public void saveGameCollections(){
+    /**
+     * Saves the current users collections to the XML document
+     */
+    public void saveGameCollections() {
         Document doc = initializeXMLDoc(userFilepath);
 
         NodeList userList = doc.getElementsByTagName("user");
-        for (int i = 0; i<userList.getLength(); i++){
+        for (int i = 0; i < userList.getLength(); i++) {
             Node user = userList.item(i);
             String testName = user.getAttributes().getNamedItem("userName").getTextContent();
-            if(currentUser.getUserName().equals(testName)){
-                for(GameCollection c : currentUser.getCollectionList()){
+            if (currentUser.getUserName().equals(testName)) {
+                for (GameCollection c : currentUser.getCollectionList()) {
                     Element gameCollection = doc.createElement("gameCollection");
                     gameCollection.setAttribute("name", c.getName());
-                    for(Game g : c){
+                    for (Game g : c) {
                         Element game = doc.createElement("game");
                         game.setAttribute("id", Integer.toString(g.getID()));
                         gameCollection.appendChild(game);
@@ -155,10 +199,18 @@ public class UserDataManager {
         }
     }
 
-    public User getCurrentUser(){
+    /**
+     * Returns the user object currentUser
+     *
+     * @return User currentUser
+     */
+    public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Private helper function which is called in the constructor to ensure the file isn't overwritten every time the class is instantiated.
+     */
     private void initializeFile() {
         //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
         File userDoc = new File(userFilepath);
@@ -184,6 +236,12 @@ public class UserDataManager {
         }
     }
 
+    /**
+     * Private helper function which writes an XML DOM to a document
+     *
+     * @param doc    the current Document DOM object you want to write to a file
+     * @param output the filepath of the file to write it to
+     */
     private static void writeXML(Document doc, String output) {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -210,6 +268,12 @@ public class UserDataManager {
         }
     }
 
+    /**
+     * Private helper function which initializes an XML Document DOM object
+     *
+     * @param userFilepath String filepath
+     * @return a XML Document DOM that has parsed the XML at filepath
+     */
     private static Document initializeXMLDoc(String userFilepath) {
         try {
             //Default construction of an XML DOM along with the FileInputStream being set to the userFilepath

@@ -14,17 +14,18 @@ public class Game {
 
     /**
      * Constructs a Game with all of its data
-     * @param id the Game's id
-     * @param thumbnail the image link to be used as the Game's thumbnail
+     *
+     * @param id            the Game's id
+     * @param thumbnail     the image link to be used as the Game's thumbnail
      * @param fullSizeImage the image link to be used as the Game's full size image
-     * @param name the Game's name
-     * @param description the Game's description
+     * @param name          the Game's name
+     * @param description   the Game's description
      * @param yearPublished the year the Game was published
-     * @param minPlayers the minimum number of players for the Game
-     * @param maxPlayers the maximum number of players for the Game
-     * @param playingTime the recommended playing time for the Game
-     * @param categoryList the list of all the Game's board game categories
-     * @param mechanicList the list of all the Game's playing mechanics
+     * @param minPlayers    the minimum number of players for the Game
+     * @param maxPlayers    the maximum number of players for the Game
+     * @param playingTime   the recommended playing time for the Game
+     * @param categoryList  the list of all the Game's board game categories
+     * @param mechanicList  the list of all the Game's playing mechanics
      */
     public Game(int id, String thumbnail, String fullSizeImage, String name, String description, int yearPublished, int minPlayers, int maxPlayers, int playingTime, ArrayList<String> categoryList, ArrayList<String> mechanicList) {
         this.id = id;
@@ -44,6 +45,7 @@ public class Game {
 
     /**
      * Adds a Review to the reviewList
+     *
      * @param r the Review to be added
      */
     public void addReview(Review r) {
@@ -52,6 +54,7 @@ public class Game {
 
     /**
      * Returns the Game as a multi-line string containing all of its information
+     *
      * @return A multi-line string containing all of this Game's information
      */
     @Override
@@ -63,6 +66,7 @@ public class Game {
 
     /**
      * Returns the Game's ID
+     *
      * @return The game's description as a String
      */
     public int getID() {
@@ -71,6 +75,7 @@ public class Game {
 
     /**
      * Returns the BGG thumbnail image link
+     *
      * @return the BGG thumbnail image link
      */
     public String getThumbnail() {
@@ -79,6 +84,7 @@ public class Game {
 
     /**
      * Returns the BGG full size image link
+     *
      * @return the BGG full size image link
      */
     public String getFullSizeImage() {
@@ -87,6 +93,7 @@ public class Game {
 
     /**
      * Returns the Game's name
+     *
      * @return the Game's name
      */
     public String getName() {
@@ -95,6 +102,7 @@ public class Game {
 
     /**
      * Returns the Game's description as a String
+     *
      * @return The game's description as a String
      */
     public String getDescription() {
@@ -103,6 +111,7 @@ public class Game {
 
     /**
      * Returns the Game's year of publishing
+     *
      * @return the Game's year of publishing
      */
     public int getYearPublished() {
@@ -111,6 +120,7 @@ public class Game {
 
     /**
      * Returns the Game's recommended minimum players
+     *
      * @return the Game's recommended minimum players
      */
     public int getMinPlayers() {
@@ -119,6 +129,7 @@ public class Game {
 
     /**
      * Returns the Game's recommended maximum players
+     *
      * @return the Game's recommended maximum players
      */
     public int getMaxPlayers() {
@@ -127,6 +138,7 @@ public class Game {
 
     /**
      * Returns the Game's suggested playing time
+     *
      * @return the Game's suggested playing time
      */
     public int getPlayingTime() {
@@ -135,6 +147,7 @@ public class Game {
 
     /**
      * Returns the Game's list of categories on BGG
+     *
      * @return the Game's list of categories on BGG
      */
     public ArrayList<String> getCategoryList() {
@@ -143,11 +156,19 @@ public class Game {
 
     /**
      * Returns the Game's list of game mechanics on BGG
+     *
      * @return the Game's list of game mechanics on BGG
      */
     public ArrayList<String> getMechanicList() {
         return mechanicList;
     }
 
-    public float getRating() { return rating; }
+    /**
+     * Retuns the Game's rating
+     *
+     * @return Float rating
+     */
+    public float getRating() {
+        return rating;
+    }
 }
