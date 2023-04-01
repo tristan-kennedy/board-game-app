@@ -13,7 +13,7 @@ public class mainTest {
 
         userDataManager.login("TestUser", "abc123", mainList);
 
-        System.out.println(userDataManager.getCurrentUser().getUserName());
+        userDataManager.loadReviews(mainList);
 
     }
 }

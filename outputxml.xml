@@ -10,5 +10,12 @@
             </gameCollection>
         </user>
     </userList>
-    <reviewList/>
+    <reviewList>
+        <review id="321608" rating="7" userName="TestUser">
+            <reviewText>This game is okay</reviewText>
+        </review>
+        <review id="321608" rating="2" userName="TestUser">
+            <reviewText>This game is the worst game that I have ever played, the only good thing is when it ends.</reviewText>
+        </review>
+    </reviewList>
 </BoardGameAppUserData>

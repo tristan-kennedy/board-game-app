@@ -1,51 +1,72 @@
 public class Review {
 
-    private float rating;
-    private String review_Text;
+    private Integer rating;
+    private String reviewText;
+    private String userName;
+    private Integer gameId;
 
     /**
-     * @param i    The rating out of 10
-     * @param text User's review of the game
+     * Parameterized constructor for a review which contains text and rating
+     *
+     * @param rating   rating of game /10
+     * @param text     String text of review
+     * @param gameId   ID of game reviewed
+     * @param userName String username of reviewer
      */
-    public Review(int i, String text) {
-        if (i > 10) {
-            i = 10;
-        } else if (i < 0) {
-            i = 0;
-        }
-        this.rating = i;
-        this.review_Text = text;
+    public Review(Integer rating, String text, Integer gameId, String userName) {
+        this.rating = rating;
+        this.reviewText = text;
+        this.gameId = gameId;
+        this.userName = userName;
     }
 
     /**
-     * @param i The rating out of 10
+     * Parameterized constructor for a review which contains only a rating
+     *
+     * @param rating   rating of game /10
+     * @param gameId   ID of game reviewed
+     * @param userName String username of reviewer
      */
-    public Review(int i) {
-        if (i > 10) {
-            i = 10;
-        } else if (i < 0) {
-            i = 0;
-        }
-        this.rating = i;
+    public Review(Integer rating, Integer gameId, String userName) {
+        this.rating = rating;
+        this.gameId = gameId;
     }
 
     /**
-     * @param text User's review of the game
+     * Gets the rating of the game
+     *
+     * @return Integer rating of game /10
      */
-    void setReview(String text) {
-        this.review_Text = text;
+    public Integer getRating() {
+        return rating;
     }
 
     /**
-     * @param i The rating out of 10
+     * Gets the text review of the game
+     *
+     * @return String reviewText
      */
-    void setRating(int i) {
-        if (i > 10) {
-            i = 10;
-        } else if (i < 0) {
-            i = 0;
-        }
-        this.rating = i;
+    public String getReviewText() {
+        return reviewText;
     }
+
+    /**
+     * Gets the userName of the reviewer
+     *
+     * @return String userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * Gets the gameId of the game reviewed
+     *
+     * @return Integer gameId
+     */
+    public Integer getGameId() {
+        return gameId;
+    }
+
 
 }

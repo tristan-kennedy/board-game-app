@@ -20,7 +20,6 @@ import java.io.*;
 public class UserDataManager {
 
     private final String userFilepath;
-
     private User currentUser;
 
     public UserDataManager(String userFilepath) {
@@ -70,11 +69,23 @@ public class UserDataManager {
         currentUser = new User("Guest", "");
     }
 
-    /* To be implemented once reviews/collections are implemented
-    public ArrayList<Review> importReviews(){
+    public void loadReviews(GameList mainList){
+        Document doc = initializeXMLDoc(userFilepath);
 
+        NodeList reviewList = doc.getElementsByTagName("review");
+        for(int i = 0; i<reviewList.getLength(); i++){
+            Node review = reviewList.item(i);
+            Integer gameId = Integer.parseInt(review.getAttributes().getNamedItem("id").getTextContent());
+            Integer rating = Integer.parseInt(review.getAttributes().getNamedItem("rating").getTextContent());
+            String userName = review.getAttributes().getNamedItem("userName").getTextContent();
+
+            NodeList reviewTextList = ((Element) review).getElementsByTagName("reviewText");
+            String reviewText = reviewTextList.item(0).getTextContent();
+
+            Review newReview = new Review(rating, reviewText, gameId, userName);
+            mainList.getGame(gameId).addReview(newReview);
+        }
     }
-     */
 
     public Boolean createAccount(String userName, String password) {
         //Call to private class which initializes an XML Doc
@@ -103,11 +114,23 @@ public class UserDataManager {
         return true;
     }
 
-    /* To be implemented once reviews/collections are implemented
-    public void saveData(){
+    public void saveReview(Review review){
+        Document doc = initializeXMLDoc(userFilepath);
 
+        Element xmlReview = doc.createElement("review");
+        xmlReview.setAttribute("userName", review.getUserName());
+        xmlReview.setAttribute("id", review.getGameId().toString());
+        xmlReview.setAttribute("rating", review.getRating().toString());
+        Element reviewText = doc.createElement("reviewText");
+        reviewText.setTextContent(review.getReviewText());
+        xmlReview.appendChild(reviewText);
+
+        NodeList list = doc.getElementsByTagName("reviewList");
+        list.item(0).appendChild(xmlReview);
+
+        writeXML(doc, userFilepath);
     }
-     */
+
     public void saveGameCollections(){
         Document doc = initializeXMLDoc(userFilepath);
 
