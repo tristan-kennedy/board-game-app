@@ -1,3 +1,4 @@
+import javax.swing.*;
 
 public class mainTest {
     public static void main(String[] args) {
@@ -14,6 +15,8 @@ public class mainTest {
         userDataManager.login("TestUser", "abc123", mainList);
 
         userDataManager.loadReviews(mainList);
+
+        new MainView();
 
     }
 }
