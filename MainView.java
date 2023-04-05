@@ -7,14 +7,14 @@ import java.net.URL;
 
 public class MainView extends JFrame {
 
-    public MainView() {
+    public MainView(GameList mainList) {
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Board Game App");
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Main Game List", new GameListView());
+        tabbedPane.addTab("Main Game List", new GameListView(mainList));
         tabbedPane.addTab("Game", new GameDataView());
         tabbedPane.addTab("Login", new LoginView());
         tabbedPane.addTab("My Collections", new CollectionPageView());

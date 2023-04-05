@@ -16,7 +16,7 @@ public class mainTest {
 
         userDataManager.loadReviews(mainList);
 
-        new MainView();
+        new MainView(mainList);
 
     }
 }
