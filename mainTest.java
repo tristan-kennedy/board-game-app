@@ -1,3 +1,5 @@
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 
 public class mainTest {
@@ -16,7 +18,10 @@ public class mainTest {
 
         userDataManager.loadReviews(mainList);
 
-        new MainView(mainList);
+        MainView main = new MainView(mainList);
+
+        main.changeGameView(mainList.getGame(381247));
+        main.changeGameView(mainList.getGame(374173));
 
     }
 }

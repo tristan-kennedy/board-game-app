@@ -3,13 +3,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 public class GameListView extends JPanel {
 
     public GameListView(GameList list) {
 
-        setLayout( new GridBagLayout() );
+        setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;

@@ -13,11 +13,16 @@ public class MainView extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Board Game App");
 
+        gameListView = new GameListView(mainList);
+        gameDataView = new GameDataView();
+        loginView = new LoginView();
+        collectionPageView = new CollectionPageView();
+
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Main Game List", new GameListView(mainList));
-        tabbedPane.addTab("Game", new GameDataView());
-        tabbedPane.addTab("Login", new LoginView());
-        tabbedPane.addTab("My Collections", new CollectionPageView());
+        tabbedPane.addTab("Main Game List", gameListView);
+        tabbedPane.addTab("Game", gameDataView);
+        tabbedPane.addTab("Login", loginView);
+        tabbedPane.addTab("My Collections", collectionPageView);
 
         JLabel label1 = new JLabel();
         label1.setPreferredSize(new Dimension(200, 40));
@@ -49,4 +54,13 @@ public class MainView extends JFrame {
         setVisible(true);
 
     }
+
+    public void changeGameView(Game game){
+        gameDataView.setGame(game);
+    }
+
+    private GameListView gameListView;
+    private GameDataView gameDataView;
+    private LoginView loginView;
+    private CollectionPageView collectionPageView;
 }
