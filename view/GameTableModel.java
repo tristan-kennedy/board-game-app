@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 class GameTableModel extends AbstractTableModel {
-    private final String[] columnNames = { "", "Name", "Rating", "Player Count" };
+    private final String[] columnNames = { "Thumbnail", "Name", "Rating", "Player Count" };
     private final ArrayList<Object[]> tableData;
 
     public GameTableModel(GameList gList) {
