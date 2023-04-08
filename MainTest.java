@@ -1,9 +1,8 @@
-import model.GameDatabaseLoader;
-import model.GameList;
-import model.UserDataManager;
+import model.*;
 import view.MainView;
 
 import javax.swing.*;
+import java.util.Random;
 
 public class MainTest {
     public static void main(String[] args) {
@@ -14,6 +13,12 @@ public class MainTest {
         GameList mainList = new GameList();
 
         databaseLoader.importGameData(mainList);
+
+        Random rand = new Random(System.currentTimeMillis());
+        for (int i = 0; i < 10; i++)
+            for (Game g : mainList)
+                g.addReview(new Review(rand.nextInt(10), "", g.getID(), ""));
+
 
         userDataManager.createAccount("TestUser", "abc123");
 
@@ -29,7 +34,7 @@ public class MainTest {
         JFrame frame = new JFrame("Board Game App");
         frame.setContentPane(new MainView(mainList).getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+        frame.setSize(800,800);
         frame.setVisible(true);
 
     }
