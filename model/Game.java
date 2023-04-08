@@ -46,12 +46,14 @@ public class Game {
     }
 
     /**
-     * Adds a Review to the reviewList
-     *
+     * Adds a Review to the reviewList and updates the Game's rating
      * @param r the Review to be added
      */
     public void addReview(Review r) {
         reviewList.add(r);
+        for (Review rev : reviewList)
+            rating += rev.getRating();
+        rating /= (float) reviewList.size();
     }
 
     /**
