@@ -1,3 +1,5 @@
+package model;
+
 public class Review {
 
     private Integer rating;

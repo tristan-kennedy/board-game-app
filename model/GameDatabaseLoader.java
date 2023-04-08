@@ -1,3 +1,5 @@
+package model;
+
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

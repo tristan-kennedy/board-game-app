@@ -1,3 +1,5 @@
+package model;
+
 public class GameCollection extends GameList {
 
     private String name;
