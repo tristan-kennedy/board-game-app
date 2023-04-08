@@ -20,10 +20,12 @@ public class GameListView {
     private JTextField searchBox;
     private JComboBox<String> searchFilter;
     private JScrollPane scrollPane;
+    private JButton clearSearch;
 
     private void createUIComponents() {
         searchBox = new JTextField();
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
+        clearSearch = new JButton();
 
         GameTableModel tableModel = new GameTableModel(gList);
         gameTable = new JTable(tableModel);
@@ -52,6 +54,11 @@ public class GameListView {
         sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
+
+        clearSearch.addActionListener(e -> {
+            searchBox.setText("");
+            sorter.setRowFilter(null);
+        });
 
         searchBox.addActionListener(e -> {
             String filter = searchFilter.getSelectedItem().toString();
