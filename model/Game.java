@@ -51,6 +51,7 @@ public class Game {
      */
     public void addReview(Review r) {
         reviewList.add(r);
+        rating = 0;
         for (Review rev : reviewList)
             rating += rev.getRating();
         rating /= (float) reviewList.size();
@@ -175,4 +176,6 @@ public class Game {
     public float getRating() {
         return rating;
     }
+
+    public ArrayList<Review> getReviewList() { return reviewList; }
 }

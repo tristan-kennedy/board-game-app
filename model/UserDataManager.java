@@ -17,19 +17,27 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
+import java.util.Scanner;
 
 public class UserDataManager {
 
-    private final String userFilepath;
-    private User currentUser;
+    private static String userFilepath;
+    public static User currentUser;
 
     /**
-     * Parameterized constructor which initializes a UserDataManager based upon a filepath
-     *
-     * @param userFilepath String filepath
+     * Default constructor which initializes the userFilePath based upon config.txt
      */
-    public UserDataManager(String userFilepath) {
-        this.userFilepath = userFilepath;
+    public UserDataManager() {
+        String line = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
+            line = reader.readLine();
+            line = reader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        userFilepath = line;
         initializeFile();
         currentUser = new User("Guest", "");
     }
@@ -42,7 +50,7 @@ public class UserDataManager {
      * @param mainList GameList mainList should be the list of all games to populate collections from.
      * @return Boolean true if login was successful, false otherwise
      */
-    public Boolean login(String userName, String password, GameList mainList) {
+    public static Boolean login(String userName, String password, GameList mainList) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
@@ -90,7 +98,7 @@ public class UserDataManager {
     /**
      * Logout sets the currentUser to a Guest user, used to disable collections.
      */
-    public void logout() {
+    public static void logout() {
         currentUser = new User("Guest", "");
     }
 
@@ -99,7 +107,7 @@ public class UserDataManager {
      *
      * @param mainList GameList mainList should be the list of all games which need reviews populated
      */
-    public void loadReviews(GameList mainList) {
+    public static void loadReviews(GameList mainList) {
         Document doc = initializeXMLDoc(userFilepath);
 
         NodeList reviewList = doc.getElementsByTagName("review");
@@ -124,7 +132,7 @@ public class UserDataManager {
      * @param password String password
      * @return Boolean true if account creation success, false otherwise
      */
-    public Boolean createAccount(String userName, String password) {
+    public static Boolean createAccount(String userName, String password) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
@@ -156,7 +164,7 @@ public class UserDataManager {
      *
      * @param review Review
      */
-    public void saveReview(Review review) {
+    public static void saveReview(Review review) {
         Document doc = initializeXMLDoc(userFilepath);
 
         Element xmlReview = doc.createElement("review");
@@ -176,7 +184,7 @@ public class UserDataManager {
     /**
      * Saves the current users collections to the XML document
      */
-    public void saveGameCollections() {
+    public static void saveGameCollections() {
         Document doc = initializeXMLDoc(userFilepath);
 
         NodeList userList = doc.getElementsByTagName("user");
@@ -201,18 +209,9 @@ public class UserDataManager {
     }
 
     /**
-     * Returns the user object currentUser
-     *
-     * @return User currentUser
-     */
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    /**
      * Private helper function which is called in the constructor to ensure the file isn't overwritten every time the class is instantiated.
      */
-    private void initializeFile() {
+    private static void initializeFile() {
         //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
         File userDoc = new File(userFilepath);
         try {
@@ -232,7 +231,7 @@ public class UserDataManager {
 
                 writeXML(doc, userFilepath);
             }
-        } catch (ParserConfigurationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -281,8 +280,7 @@ public class UserDataManager {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             InputStream is = new FileInputStream(userFilepath);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(is);
-            return doc;
+            return db.parse(is);
         } catch (SecurityException | ParserConfigurationException | IOException | SAXException |
                  IllegalArgumentException e) {
             e.printStackTrace();

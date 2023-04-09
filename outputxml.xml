@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BoardGameAppUserData>
     <userList>
-        <user password="abc123" userName="TestUser">
-            <gameCollection name="TestCollection">
-                <game id="321608"/>
-            </gameCollection>
-            <gameCollection name="ThisIsAnotherCollection">
-                <game id="321608"/>
-            </gameCollection>
-        </user>
+        <user password="abc123" userName="TestUser"/>
     </userList>
     <reviewList>
-        <review id="321608" rating="7" userName="TestUser">
-            <reviewText>This game is okay</reviewText>
+        <review id="173346" rating="6" userName="TestUser">
+            <reviewText>Test Review Again</reviewText>
         </review>
-        <review id="321608" rating="2" userName="TestUser">
-            <reviewText>This game is the worst game that I have ever played, the only good thing is when it ends.</reviewText>
+        <review id="242705" rating="10" userName="TestUser">
+            <reviewText>This is a review for Aeon Trespass: Odyssey</reviewText>
+        </review>
+        <review id="173346" rating="3" userName="TestUser">
+            <reviewText>New review</reviewText>
         </review>
     </reviewList>
 </BoardGameAppUserData>

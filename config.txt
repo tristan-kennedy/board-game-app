@@ -1,2 +1,2 @@
-inputxml.xml
+bgg90Games.xml
 outputxml.xml
