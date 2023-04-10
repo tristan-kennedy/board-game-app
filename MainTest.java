@@ -7,12 +7,10 @@ import java.util.Random;
 public class MainTest {
     public static void main(String[] args) {
 
-        UserDataManager userDataManager = new UserDataManager();
-        GameDatabaseLoader databaseLoader = new GameDatabaseLoader("bgg90Games.xml");
+        GameDatabaseLoader.initializeFile();
+        GameDatabaseLoader.importGameData();
 
-        GameList mainList = new GameList();
-
-        databaseLoader.importGameData(mainList);
+        UserDataManager.intializeFile();
 
         /*
         Random rand = new Random(System.currentTimeMillis());
@@ -23,9 +21,9 @@ public class MainTest {
 
         UserDataManager.createAccount("TestUser", "abc123");
 
-        UserDataManager.login("TestUser", "abc123", mainList);
+        UserDataManager.login("TestUser", "abc123");
 
-        UserDataManager.loadReviews(mainList);
+        UserDataManager.loadReviews();
 
 //        MainView main = new MainView(mainList);
 //
@@ -33,7 +31,7 @@ public class MainTest {
 //        main.changeGameView(mainList.getGame(374173));
 
         JFrame frame = new JFrame("Board Game App");
-        frame.setContentPane(new MainView(mainList).getMainPanel());
+        frame.setContentPane(new MainView(GameDatabaseLoader.mainList).getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,800);
         frame.setVisible(true);

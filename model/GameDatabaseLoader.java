@@ -1,5 +1,6 @@
 package model;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,23 +20,29 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class GameDatabaseLoader {
 
-    private final String gameFilepath;
+    private static String gameFilepath;
+
+    public static GameList mainList;
 
     /**
      * Constructs the loader from a String containing the XML file's filepath
-     *
-     * @param gameFilepath the XML file's filepath
      */
-    public GameDatabaseLoader(String gameFilepath) {
-        this.gameFilepath = gameFilepath;
+    public static void initializeFile() {
+        String line = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
+            line = reader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        gameFilepath = line;
+        mainList = new GameList();
     }
 
     /**
      * Imports all game data from the XML file into a GameList object comprised of individual Games
-     *
-     * @param gList the GameList containing all the read-in game data
      */
-    public void importGameData(GameList gList) {
+    public static void importGameData() {
 
         // Used to temporarily store data from the XML file until each Game object is constructed
         String thumbnail = "";
@@ -152,7 +159,7 @@ public class GameDatabaseLoader {
                         Game g = new Game(id, thumbnail, fullSizeImage, name, description, yearPublished, minPlayers, maxPlayers, playingTime, categoryList, mechanicList);
 
                         // Add it to the game list
-                        gList.addGame(g);
+                        mainList.addGame(g);
 
                         // Reset all variables for the next Game object
                         id = 0;

@@ -17,7 +17,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
-import java.util.Scanner;
 
 public class UserDataManager {
 
@@ -27,7 +26,7 @@ public class UserDataManager {
     /**
      * Default constructor which initializes the userFilePath based upon config.txt
      */
-    public UserDataManager() {
+    public static void intializeFile() {
         String line = "";
         try {
             BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
@@ -38,8 +37,30 @@ public class UserDataManager {
         }
 
         userFilepath = line;
-        initializeFile();
         currentUser = new User("Guest", "");
+
+        //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
+        File userDoc = new File(userFilepath);
+        try {
+            if (userDoc.length() == 0) {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                // root elements
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("BoardGameAppUserData");
+                doc.appendChild(rootElement);
+
+                Element userList = doc.createElement("userList");
+                rootElement.appendChild(userList);
+                Element reviewList = doc.createElement("reviewList");
+                rootElement.appendChild(reviewList);
+
+                writeXML(doc, userFilepath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -47,10 +68,9 @@ public class UserDataManager {
      *
      * @param userName String userName
      * @param password String password
-     * @param mainList GameList mainList should be the list of all games to populate collections from.
      * @return Boolean true if login was successful, false otherwise
      */
-    public static Boolean login(String userName, String password, GameList mainList) {
+    public static Boolean login(String userName, String password) {
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
@@ -78,7 +98,7 @@ public class UserDataManager {
                         for (int k = 0; k < gameList.getLength(); k++) {
                             Node game = gameList.item(k);
                             int gameId = Integer.parseInt(game.getAttributes().getNamedItem("id").getTextContent());
-                            newGameCollection.addGame(mainList.getGame(gameId));
+                            newGameCollection.addGame(GameDatabaseLoader.mainList.getGame(gameId));
                         }
                         currentUser.addCollection(newGameCollection);
                     }
@@ -104,10 +124,8 @@ public class UserDataManager {
 
     /**
      * Populates all reviews in a GameList via an XML document, uses GameID.
-     *
-     * @param mainList GameList mainList should be the list of all games which need reviews populated
      */
-    public static void loadReviews(GameList mainList) {
+    public static void loadReviews() {
         Document doc = initializeXMLDoc(userFilepath);
 
         NodeList reviewList = doc.getElementsByTagName("review");
@@ -121,7 +139,7 @@ public class UserDataManager {
             String reviewText = reviewTextList.item(0).getTextContent();
 
             Review newReview = new Review(rating, reviewText, gameId, userName);
-            mainList.getGame(gameId).addReview(newReview);
+            GameDatabaseLoader.mainList.getGame(gameId).addReview(newReview);
         }
     }
 
@@ -205,34 +223,6 @@ public class UserDataManager {
                 writeXML(doc, userFilepath);
                 return;
             }
-        }
-    }
-
-    /**
-     * Private helper function which is called in the constructor to ensure the file isn't overwritten every time the class is instantiated.
-     */
-    private static void initializeFile() {
-        //This code only executes if the UserData file dictated by the config.txt doesn't exist or has no data
-        File userDoc = new File(userFilepath);
-        try {
-            if (userDoc.length() == 0) {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                // root elements
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("BoardGameAppUserData");
-                doc.appendChild(rootElement);
-
-                Element userList = doc.createElement("userList");
-                rootElement.appendChild(userList);
-                Element reviewList = doc.createElement("reviewList");
-                rootElement.appendChild(reviewList);
-
-                writeXML(doc, userFilepath);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
