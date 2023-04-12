@@ -18,10 +18,12 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
 
-public class UserDataManager {
+public final class UserDataManager {
 
     private static String userFilepath;
     public static User currentUser;
+
+    private UserDataManager() {}
 
     /**
      * Default constructor which initializes the userFilePath based upon config.txt

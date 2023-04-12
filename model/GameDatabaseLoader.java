@@ -18,11 +18,12 @@ import javax.xml.stream.events.XMLEvent;
 /**
  * Loads the game data from a Board Game Geek XML file into a GameList of Game objects for use elsewhere
  */
-public class GameDatabaseLoader {
+public final class GameDatabaseLoader {
 
     private static String gameFilepath;
-
     public static GameList mainList;
+
+    private GameDatabaseLoader() {}
 
     /**
      * Constructs the loader from a String containing the XML file's filepath
