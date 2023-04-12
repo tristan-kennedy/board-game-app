@@ -10,7 +10,7 @@ public class MainTest {
         GameDatabaseLoader.initializeFile();
         GameDatabaseLoader.importGameData();
 
-        UserDataManager.intializeFile();
+        UserDataManager.initializeFile();
 
         /*
         Random rand = new Random(System.currentTimeMillis());

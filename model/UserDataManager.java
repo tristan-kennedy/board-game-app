@@ -26,7 +26,7 @@ public class UserDataManager {
     /**
      * Default constructor which initializes the userFilePath based upon config.txt
      */
-    public static void intializeFile() {
+    public static void initializeFile() {
         String line = "";
         try {
             BufferedReader reader = new BufferedReader(new FileReader("config.txt"));
