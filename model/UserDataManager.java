@@ -131,8 +131,8 @@ public class UserDataManager {
         NodeList reviewList = doc.getElementsByTagName("review");
         for (int i = 0; i < reviewList.getLength(); i++) {
             Node review = reviewList.item(i);
-            Integer gameId = Integer.parseInt(review.getAttributes().getNamedItem("id").getTextContent());
-            Integer rating = Integer.parseInt(review.getAttributes().getNamedItem("rating").getTextContent());
+            int gameId = Integer.parseInt(review.getAttributes().getNamedItem("id").getTextContent());
+            int rating = Integer.parseInt(review.getAttributes().getNamedItem("rating").getTextContent());
             String userName = review.getAttributes().getNamedItem("userName").getTextContent();
 
             NodeList reviewTextList = ((Element) review).getElementsByTagName("reviewText");
