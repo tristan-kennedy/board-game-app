@@ -4,6 +4,7 @@
         <user password="abc123" userName="TestUser"/>
         <user password="abc123" userName="Tristan"/>
         <user password="Password" userName="Username"/>
+        <user password="" userName=""/>
     </userList>
     <reviewList>
         <review id="173346" rating="6" userName="TestUser">
