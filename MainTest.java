@@ -10,11 +10,6 @@ public class MainTest {
         GameDatabaseLoader.importGameData();
 
         UserDataManager.initializeFile();
-
-        UserDataManager.createAccount("TestUser", "abc123");
-
-        UserDataManager.login("TestUser", "abc123");
-
         UserDataManager.loadReviews();
 
         JFrame frame = new JFrame("Board Game App");

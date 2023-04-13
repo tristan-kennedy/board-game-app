@@ -1,40 +1,90 @@
 package view;
 
-import model.Game;
-import model.GameCollection;
-import model.User;
+import model.*;
 
 import javax.swing.*;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
-
-import javax.swing.*;
-import java.util.ArrayList;
 
 public class CollectionPageView {
-    private ArrayList<GameCollection> collections;
+
+    private TabSwitchListener listener;
+    private DefaultTableModel tableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     private JPanel collectionPagePanel;
-    private JTable collTable;
-    private JScrollPane pane;
+    private JTable collectionsTable;
+    private JTextField collectionName;
+    private JButton addCollectionButton;
+    private GameListView gameListView;
+    private JPanel collectionGameListViewPanel;
+    private JButton saveButton;
+    private JButton deleteSelectedButton;
 
-    public  int j;
-    private String[] collum;
-    Object[] collData;
 
+    public CollectionPageView() {
 
+        tableModel.addColumn("Collection Name");
 
-    public CollectionPageView(User u) {
-        collections=u.getCollectionList();
-        collectionPagePanel = new JPanel();
-        collum = new String[] {"collections"};
-        collData=collections.toArray();
-        collTable = new JTable();
-        pane = new JScrollPane(collTable);
+        addCollectionButton.addActionListener(e -> {
+            String name = collectionName.getText();
+            collectionName.setText("");
+
+            GameCollection collection = new GameCollection(name);
+            if (UserDataManager.currentUser.addCollection(collection))
+                tableModel.addRow(new Object[]{name});
+        });
+
+        deleteSelectedButton.addActionListener(e -> {
+            if(collectionsTable.getSelectedRow() != -1){
+                String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
+                UserDataManager.currentUser.deleteCollection(UserDataManager.currentUser.getGameCollectionByName(name));
+                tableModel.removeRow(collectionsTable.getSelectedRow());
+            }
+        });
+
+        saveButton.addActionListener(e -> {
+            UserDataManager.saveGameCollections();
+        });
+
+        collectionsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
+                    GameCollection selectedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
+                    gameListView = new GameListView(selectedCollection);
+                    //collectionGameListViewPanel = gameListView.getPanel();
+                }
+            }
+        });
+
+        collectionsTable.setModel(tableModel);
+        collectionsTable.setRowHeight(60);
+
     }
-    public JPanel getPanel() { return collectionPagePanel; }
+
+    public void setCurrentUser(User user) {
+
+        tableModel.setRowCount(0);
+
+        for(GameCollection c : user.getCollectionList()){
+            tableModel.addRow(new Object[]{c.getName()});
+        }
+
+    }
+
+    public JPanel getPanel() {
+        return collectionPagePanel;
+    }
+
+    private void createUIComponents() {
+        gameListView = new GameListView(new GameList());
+        collectionGameListViewPanel = gameListView.getPanel();
+    }
 
 }

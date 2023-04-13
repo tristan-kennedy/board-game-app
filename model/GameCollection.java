@@ -18,7 +18,7 @@ public class GameCollection extends GameList {
      *
      * @param game Game to be removed
      */
-    void remove(Game game) {
+    public void remove(Game game) {
         gameList.remove(game);
     }
 
@@ -27,7 +27,7 @@ public class GameCollection extends GameList {
      *
      * @param name String new name of collection
      */
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -36,7 +36,7 @@ public class GameCollection extends GameList {
      *
      * @return String name
      */
-    String getName() {
+    public String getName() {
         return name;
     }
 

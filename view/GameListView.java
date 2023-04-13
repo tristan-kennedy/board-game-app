@@ -2,6 +2,7 @@ package view;
 
 import model.Game;
 import model.GameDatabaseLoader;
+import model.GameList;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -12,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class GameListView {
 
-    private TabSwitchListener listener;
 
+    private TabSwitchListener listener;
     private JPanel gameListPanel;
     private JTable gameTable;
     private GameTableModel tableModel;
@@ -21,14 +22,17 @@ public class GameListView {
     private JComboBox<String> searchFilter;
     private JScrollPane scrollPane;
     private JButton clearSearch;
+    private GameList glist;
 
     private void createUIComponents() {
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
-        tableModel = new GameTableModel(GameDatabaseLoader.mainList);
+        tableModel = new GameTableModel(glist);
         gameTable = new JTable(tableModel);
     }
 
-    public GameListView() {
+    public GameListView(GameList gameList) {
+        glist = gameList;
+
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
 

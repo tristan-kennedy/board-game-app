@@ -13,6 +13,7 @@ public class LoginView {
     private JButton loginButton;
     private JButton createAccountButton;
     private JLabel errorLabel;
+    private JButton logoutButton;
 
     public JPanel getPanel() { return loginPanel; }
 
@@ -57,6 +58,12 @@ public class LoginView {
                 errorLabel.setText("Account Created");
             }
 
+        });
+
+        logoutButton.addActionListener(e -> {
+            UserDataManager.logout();
+            errorLabel.setForeground(Color.GREEN);
+            errorLabel.setText("Logged Out");
         });
     }
 }

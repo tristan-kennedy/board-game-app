@@ -1,38 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BoardGameAppUserData>
     <userList>
-        <user password="abc123" userName="TestUser"/>
-        <user password="abc123" userName="Tristan"/>
-        <user password="Password" userName="Username"/>
-        <user password="" userName=""/>
+        <user password="abc123" userName="Tristan">
+            <gameCollection name="Favorites">
+                <game id="256568"/>
+            </gameCollection>
+            <gameCollection name="Games About Mars"/>
+        </user>
     </userList>
     <reviewList>
-        <review id="173346" rating="6" userName="TestUser">
-            <reviewText>Test Review Again</reviewText>
-        </review>
-        <review id="242705" rating="10" userName="TestUser">
-            <reviewText>This is a review for Aeon Trespass: Odyssey</reviewText>
-        </review>
-        <review id="173346" rating="3" userName="TestUser">
-            <reviewText>New review</reviewText>
-        </review>
-        <review id="256568" rating="1" userName="TestUser">
-            <reviewText>New review by a guy</reviewText>
-        </review>
-        <review id="266192" rating="8" userName="TestUser">
-            <reviewText>This game is perfect but I hate the idiots who I have to play it with.</reviewText>
-        </review>
-        <review id="20100" rating="4" userName="TestUser">
-            <reviewText>This game is kinda mid</reviewText>
-        </review>
-        <review id="242705" rating="10" userName="TestUser">
-            <reviewText>Testing</reviewText>
-        </review>
-        <review id="242705" rating="10" userName="Tristan">
-            <reviewText>This should be a review from tristan</reviewText>
-        </review>
-        <review id="266192" rating="6" userName="TestUser">
-            <reviewText>New Review test</reviewText>
+        <review id="256568" rating="6" userName="Guest">
+            <reviewText>I don't like this game</reviewText>
         </review>
     </reviewList>
 </BoardGameAppUserData>

@@ -153,6 +153,8 @@ public final class UserDataManager {
      * @return Boolean true if account creation success, false otherwise
      */
     public static Boolean createAccount(String userName, String password) {
+        if(userName == "Guest")
+            return  false;
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 
@@ -212,6 +214,10 @@ public final class UserDataManager {
             Node user = userList.item(i);
             String testName = user.getAttributes().getNamedItem("userName").getTextContent();
             if (currentUser.getUserName().equals(testName)) {
+                //Clearing the list before adding new things to it
+                while(user.hasChildNodes())
+                    user.removeChild(user.getFirstChild());
+
                 for (GameCollection c : currentUser.getCollectionList()) {
                     Element gameCollection = doc.createElement("gameCollection");
                     gameCollection.setAttribute("name", c.getName());

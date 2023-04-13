@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import model.Game;
+import model.GameCollection;
 import model.Review;
 import model.UserDataManager;
 
@@ -29,6 +30,9 @@ public class GameDataView extends JPanel {
     private JSlider ratingSlider;
     private JTextField ratingTextBox;
     private JButton ratingSubmitButton;
+    private JButton addGameToCollectionButton;
+    private JLabel ratingValue;
+    private JComboBox<String> collectionList;
 
     public GameDataView() {
 
@@ -58,6 +62,14 @@ public class GameDataView extends JPanel {
 
             //Save review to XML
             UserDataManager.saveReview(review);
+
+            //Update on screen rating
+            ratingValue.setText(Float.toString(currentGameOnScreen.getRating()));
+        });
+
+        addGameToCollectionButton.addActionListener(e -> {
+            String collectionSelection = collectionList.getSelectedItem().toString();
+            UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
         });
     }
 
@@ -72,6 +84,7 @@ public class GameDataView extends JPanel {
         currentGameOnScreen = g;
 
         gameName.setText(g.getName());
+        ratingValue.setText(Float.toString(g.getRating()));
 
         ImageIcon imageIcon = null;
         try {
@@ -89,5 +102,9 @@ public class GameDataView extends JPanel {
         for (Review r : g.getReviewList()) {
             tableModel.addRow(new Object[]{r.getRating(), r.getReviewText(), r.getUserName()});
         }
+
+        collectionList.removeAllItems();
+        for(GameCollection c : UserDataManager.currentUser.getCollectionList())
+            collectionList.addItem(c.getName());
     }
 }

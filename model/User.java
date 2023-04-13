@@ -43,8 +43,12 @@ public class User {
      *
      * @param collection GameCollection
      */
-    public void addCollection(GameCollection collection) {
-        collectionList.add(collection);
+    public boolean addCollection(GameCollection collection) {
+        if (!hasCollection(collection.getName())){
+            collectionList.add(collection);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -54,5 +58,19 @@ public class User {
      */
     public void deleteCollection(GameCollection collection) {
         collectionList.remove(collection);
+    }
+
+    public GameCollection getGameCollectionByName(String name) {
+        for (GameCollection c : collectionList)
+            if (c.getName() == name)
+                return c;
+        return null;
+    }
+
+    public boolean hasCollection(String name) {
+        for (GameCollection c : collectionList)
+            if(c.getName() == name)
+                return true;
+        return  false;
     }
 }
