@@ -40,7 +40,7 @@ public class CollectionPageView {
         });
 
         deleteSelectedButton.addActionListener(e -> {
-            if(collectionsTable.getSelectedRow() != -1){
+            if (collectionsTable.getSelectedRow() != -1) {
                 String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
                 UserDataManager.currentUser.deleteCollection(UserDataManager.currentUser.getGameCollectionByName(name));
                 tableModel.removeRow(collectionsTable.getSelectedRow());
@@ -57,8 +57,7 @@ public class CollectionPageView {
                 if (e.getClickCount() == 2) {
                     String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
                     GameCollection selectedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
-                    gameListView = new GameListView(selectedCollection);
-                    //collectionGameListViewPanel = gameListView.getPanel();
+                    gameListView.setTable(selectedCollection);
                 }
             }
         });
@@ -72,7 +71,7 @@ public class CollectionPageView {
 
         tableModel.setRowCount(0);
 
-        for(GameCollection c : user.getCollectionList()){
+        for (GameCollection c : user.getCollectionList()) {
             tableModel.addRow(new Object[]{c.getName()});
         }
 

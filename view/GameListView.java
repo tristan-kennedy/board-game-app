@@ -123,5 +123,9 @@ public class GameListView {
         listener = tsl;
     }
 
+    public void setTable(GameList gameList){
+        tableModel.setTableData(gameList);
+    }
+
 
 }

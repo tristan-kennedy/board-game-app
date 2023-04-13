@@ -7,6 +7,11 @@
             </gameCollection>
             <gameCollection name="Games About Mars"/>
         </user>
+        <user password="" userName="">
+            <gameCollection name="New Collection">
+                <game id="224517"/>
+            </gameCollection>
+        </user>
     </userList>
     <reviewList>
         <review id="256568" rating="6" userName="Guest">

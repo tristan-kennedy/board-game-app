@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 class GameTableModel extends AbstractTableModel {
     private final String[] columnNames = { "Thumbnail", "Name", "Rating", "Player Count" };
-    private final ArrayList<Object[]> tableData;
+    private ArrayList<Object[]> tableData;
 
     public GameTableModel(GameList gList) {
         tableData = new ArrayList<>();
@@ -53,5 +53,19 @@ class GameTableModel extends AbstractTableModel {
 
     public Object[] getRow(int rowIndex) {
         return tableData.get(rowIndex);
+    }
+
+    public void setTableData(GameList gameList){
+        tableData = new ArrayList<>();
+        for (Game g : gameList) {
+            tableData.add(new Object[]{
+                    g.getThumbnail(),
+                    g.getName() + " (" + g.getYearPublished() + ")",
+                    g.getRating(),
+                    g.getMinPlayers() + "-" + g.getMaxPlayers(),
+                    g.getID()
+            });
+        }
+        fireTableDataChanged();
     }
 }
