@@ -85,7 +85,7 @@ public class CollectionPageView {
         collectionGameListViewPanel = gameListView.getPanel();
     }
 
-    public void addTabSwitchListener(TabSwitchListener tsl) {
-        gameListView.addTabSwitchListener(tsl);
+    public void addSwitchTabListener(SwitchTabListener tsl) {
+        gameListView.addSwitchTabListener(tsl);
     }
 }

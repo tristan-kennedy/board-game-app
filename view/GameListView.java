@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class GameListView {
 
+    private SwitchTabListener listener;
 
-    private TabSwitchListener listener;
     private JPanel gameListPanel;
     private JTable gameTable;
     private GameTableModel tableModel;
@@ -22,16 +22,16 @@ public class GameListView {
     private JComboBox<String> searchFilter;
     private JScrollPane scrollPane;
     private JButton clearSearch;
-    private GameList glist;
+    private GameList gList;
 
     private void createUIComponents() {
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
-        tableModel = new GameTableModel(glist);
+        tableModel = new GameTableModel(gList);
         gameTable = new JTable(tableModel);
     }
 
     public GameListView(GameList gameList) {
-        glist = gameList;
+        gList = gameList;
 
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
@@ -119,8 +119,8 @@ public class GameListView {
         return GameDatabaseLoader.mainList.getGame(topGameID);
     }
 
-    public void addTabSwitchListener(TabSwitchListener tsl) {
-        listener = tsl;
+    public void addSwitchTabListener(SwitchTabListener stl) {
+        listener = stl;
     }
 
     public void setTable(GameList gameList){

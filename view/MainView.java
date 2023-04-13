@@ -27,7 +27,7 @@ public class MainView implements TabSwitchListener {
     private void createUIComponents() {
         gameListView = new GameListView(GameDatabaseLoader.mainList);
         gameListViewPanel = gameListView.getPanel();
-        gameListView.addTabSwitchListener(this);
+        gameListView.addSwitchTabListener(this);
 
         gameDataView = new GameDataView();
         gameDataViewPanel = gameDataView.getPanel();
@@ -36,7 +36,7 @@ public class MainView implements TabSwitchListener {
 
         collectionPageView = new CollectionPageView();
         collectionsViewPanel = collectionPageView.getPanel();
-        collectionPageView.addTabSwitchListener(this);
+        collectionPageView.addSwitchTabListener(this);
     }
 
     public MainView() {
