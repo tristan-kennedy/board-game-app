@@ -1,13 +1,10 @@
 package view;
 
 import model.Game;
-import model.GameList;
 
 import javax.swing.*;
 
 public class MainView implements TabSwitchListener {
-
-    private GameList gList;
 
     private GameListView gameListView;
     private GameDataView gameDataView;
@@ -22,20 +19,17 @@ public class MainView implements TabSwitchListener {
     public JPanel getMainPanel() { return mainPanel; }
 
     private void createUIComponents() {
-        gameListView = new GameListView(gList);
+        gameListView = new GameListView();
         gameListViewPanel = gameListView.getPanel();
         gameListView.addTabSwitchListener(this);
 
         gameDataView = new GameDataView();
+        gameDataView.setGame(gameListView.getTopRatedGame());
         gameDataViewPanel = gameDataView.getPanel();
 
         loginViewPanel = new LoginView().getPanel();
 
         collectionsViewPanel = new CollectionPageView().getPanel();
-    }
-
-    public MainView(GameList gList) {
-        this.gList = gList;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package view;
 
 import model.Game;
-import model.GameList;
+import model.GameDatabaseLoader;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -13,23 +13,22 @@ import java.util.regex.Pattern;
 public class GameListView {
 
     private TabSwitchListener listener;
-    private GameList gList;
 
     private JPanel gameListPanel;
     private JTable gameTable;
+    private GameTableModel tableModel;
     private JTextField searchBox;
     private JComboBox<String> searchFilter;
     private JScrollPane scrollPane;
     private JButton clearSearch;
 
     private void createUIComponents() {
-        searchBox = new JTextField();
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
-        clearSearch = new JButton();
-
-        GameTableModel tableModel = new GameTableModel(gList);
+        tableModel = new GameTableModel(GameDatabaseLoader.mainList);
         gameTable = new JTable(tableModel);
+    }
 
+    public GameListView() {
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
 
@@ -38,7 +37,7 @@ public class GameListView {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int gameID = (int) tableModel.getValueAt(gameTable.convertRowIndexToModel(gameTable.getSelectedRow()), 4);
-                    Game g = gList.getGame(gameID);
+                    Game g = GameDatabaseLoader.mainList.getGame(gameID);
                     listener.switchTab(1, g);
                 }
             }
@@ -54,6 +53,8 @@ public class GameListView {
         sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
+
+
 
         clearSearch.addActionListener(e -> {
             searchBox.setText("");
@@ -73,14 +74,13 @@ public class GameListView {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         String name = entry.getModel().getValueAt(entry.getIdentifier(), 1).toString();
-
                         return pattern.matcher(name).find();
                     }
                 };
                 case "Category" -> rf = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
-                        Game g = gList.getGame((int) entry.getModel().getValueAt(entry.getIdentifier(), 4));
+                        Game g = GameDatabaseLoader.mainList.getGame((int) entry.getModel().getValueAt(entry.getIdentifier(), 4));
                         for (String category : g.getCategoryList())
                             if (pattern.matcher(category).find()) return true;
                         return false;
@@ -90,7 +90,7 @@ public class GameListView {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         Object[] tableRow = entry.getModel().getRow(entry.getIdentifier());
-                        Game g = gList.getGame((int) tableRow[4]);
+                        Game g = GameDatabaseLoader.mainList.getGame((int) tableRow[4]);
                         for (String mechanic : g.getMechanicList())
                             if (pattern.matcher(mechanic).find()) return true;
                         return false;
@@ -102,12 +102,17 @@ public class GameListView {
         });
     }
 
-    public GameListView(GameList gList) {
-        this.gList = gList;
-    }
-
     public JPanel getPanel() {
         return gameListPanel;
+    }
+
+    /**
+     * Returns the top-rated game in the table
+     * @return the top-rated game in the table
+     */
+    public Game getTopRatedGame() {
+        int topGameID = (int) tableModel.getValueAt(gameTable.convertRowIndexToModel(0), 4);
+        return GameDatabaseLoader.mainList.getGame(topGameID);
     }
 
     public void addTabSwitchListener(TabSwitchListener tsl) {
