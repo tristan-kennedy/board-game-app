@@ -2,6 +2,8 @@ package view;
 
 import model.Game;
 import model.GameList;
+import model.User;
+import model.UserDataManager;
 
 import javax.swing.*;
 
@@ -19,6 +21,8 @@ public class MainView implements TabSwitchListener {
     private JPanel loginViewPanel;
     private JPanel collectionsViewPanel;
 
+    public UserDataManager um;
+
     public JPanel getMainPanel() { return mainPanel; }
 
     private void createUIComponents() {
@@ -31,7 +35,7 @@ public class MainView implements TabSwitchListener {
 
         loginViewPanel = new LoginView().getPanel();
 
-        collectionsViewPanel = new CollectionPageView().getPanel();
+        collectionsViewPanel = new CollectionPageView(um.currentUser).getPanel();
     }
 
     public MainView(GameList gList) {
