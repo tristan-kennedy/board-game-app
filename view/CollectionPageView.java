@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 
 public class CollectionPageView {
 
-    private TabSwitchListener listener;
     private DefaultTableModel tableModel = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -86,4 +85,7 @@ public class CollectionPageView {
         collectionGameListViewPanel = gameListView.getPanel();
     }
 
+    public void addTabSwitchListener(TabSwitchListener tsl) {
+        gameListView.addTabSwitchListener(tsl);
+    }
 }

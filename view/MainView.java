@@ -35,8 +35,8 @@ public class MainView implements TabSwitchListener {
         loginViewPanel = new LoginView().getPanel();
 
         collectionPageView = new CollectionPageView();
-        collectionPageView.setCurrentUser(UserDataManager.currentUser);
         collectionsViewPanel = collectionPageView.getPanel();
+        collectionPageView.addTabSwitchListener(this);
     }
 
     public MainView() {
