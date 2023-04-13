@@ -6,6 +6,10 @@
                 <game id="256568"/>
             </gameCollection>
             <gameCollection name="Games About Mars"/>
+            <gameCollection name="Poop">
+                <game id="2453"/>
+                <game id="277659"/>
+            </gameCollection>
         </user>
         <user password="" userName="">
             <gameCollection name="New Collection">

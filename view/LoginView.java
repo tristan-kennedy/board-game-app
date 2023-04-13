@@ -15,9 +15,11 @@ public class LoginView {
     private JLabel errorLabel;
     private JButton logoutButton;
 
-    public JPanel getPanel() { return loginPanel; }
+    public JPanel getPanel() {
+        return loginPanel;
+    }
 
-    public LoginView(){
+    public LoginView() {
         loginButton.addActionListener(e -> {
 
             errorLabel.setText("");
@@ -28,11 +30,10 @@ public class LoginView {
             usernameTextField.setText("");
             passwordTextField.setText("");
 
-            if(!(UserDataManager.login(userName, password))){
+            if (!(UserDataManager.login(userName, password))) {
                 errorLabel.setForeground(Color.RED);
                 errorLabel.setText("Incorrect Login Info");
-            }
-            else{
+            } else {
                 errorLabel.setForeground(Color.GREEN);
                 errorLabel.setText("Login Successful");
             }
@@ -49,11 +50,10 @@ public class LoginView {
             usernameTextField.setText("");
             passwordTextField.setText("");
 
-            if(!(UserDataManager.createAccount(userName, password))){
+            if (!(UserDataManager.createAccount(userName, password))) {
                 errorLabel.setForeground(Color.RED);
                 errorLabel.setText("Username Already Taken");
-            }
-            else{
+            } else {
                 errorLabel.setForeground(Color.GREEN);
                 errorLabel.setText("Account Created");
             }
@@ -61,9 +61,22 @@ public class LoginView {
         });
 
         logoutButton.addActionListener(e -> {
-            UserDataManager.logout();
-            errorLabel.setForeground(Color.GREEN);
-            errorLabel.setText("Logged Out");
+            if (!(UserDataManager.currentUser.getUserName() == "Guest")) {
+                JFrame frame = new JFrame();
+                String message = "Would you like to save your collections changes?";
+                int answer = JOptionPane.showConfirmDialog(frame, message);
+                if (answer == JOptionPane.YES_OPTION){
+                    UserDataManager.saveGameCollections();
+                    UserDataManager.logout();
+                    errorLabel.setForeground(Color.GREEN);
+                    errorLabel.setText("Logged Out");
+                }
+                else if (answer == JOptionPane.NO_OPTION) {
+                    UserDataManager.logout();
+                    errorLabel.setForeground(Color.GREEN);
+                    errorLabel.setText("Logged Out");
+                }
+            }
         });
     }
 }
