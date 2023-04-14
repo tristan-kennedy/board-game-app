@@ -5,13 +5,12 @@ import model.GameDatabaseLoader;
 import model.UserDataManager;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-public class MainView implements TabSwitchListener {
+public class MainView implements SwitchTabListener, LoginLogoutListener {
 
     private GameListView gameListView;
     private GameDataView gameDataView;
+    private LoginView loginView;
     private CollectionPageView collectionPageView;
     private JTabbedPane tabbedPane;
     private JPanel mainPanel;
@@ -32,7 +31,9 @@ public class MainView implements TabSwitchListener {
         gameDataView = new GameDataView();
         gameDataViewPanel = gameDataView.getPanel();
 
-        loginViewPanel = new LoginView().getPanel();
+        loginView = new LoginView();
+        loginView.addLoginLogoutListener(this);
+        loginViewPanel = loginView.getPanel();
 
         collectionPageView = new CollectionPageView();
         collectionsViewPanel = collectionPageView.getPanel();
@@ -42,18 +43,7 @@ public class MainView implements TabSwitchListener {
     public MainView() {
         tabbedPane.setEnabledAt(1, false);
         tabbedPane.setEnabledAt(3, false);
-        tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-
-                if (UserDataManager.currentUser.getUserName() != "Guest") {
-                    tabbedPane.setEnabledAt(3, true);
-                    collectionPageView.setCurrentUser(UserDataManager.currentUser);
-                } else {
-                    tabbedPane.setEnabledAt(3, false);
-                }
-            }
-        });
+        tabbedPane.addChangeListener(e -> loginView.clearText());
     }
 
     @Override
@@ -61,6 +51,23 @@ public class MainView implements TabSwitchListener {
         tabbedPane.setEnabledAt(1, true);
         gameDataView.setGame(g);
         tabbedPane.setSelectedIndex(switchTabTo);
+    }
+
+    @Override
+    public void onLogin() {
+        // If the logged-in user isn't a guest, enable the collections tab
+        if (!UserDataManager.currentUser.getUserName().equals("Guest")) {
+            tabbedPane.setEnabledAt(3, true);
+            collectionPageView.setCurrentUser(UserDataManager.currentUser);
+        }
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    @Override
+    public void onLogout() {
+        // Disable the collections tab
+        tabbedPane.setEnabledAt(3, false);
     }
 }
 

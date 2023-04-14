@@ -46,34 +46,31 @@ public class CollectionPageView {
             }
         });
 
-        saveButton.addActionListener(e -> {
-            UserDataManager.saveGameCollections();
-        });
+        saveButton.addActionListener(e -> UserDataManager.saveGameCollections());
 
         collectionsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
-                    GameCollection selectedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
-                    gameListView.setTable(selectedCollection);
-                }
+            if (e.getClickCount() == 2) {
+                String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
+                GameCollection selectedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
+                gameListView.setTable(selectedCollection);
+            }
             }
         });
 
         collectionsTable.setModel(tableModel);
         collectionsTable.setRowHeight(60);
-
     }
 
     public void setCurrentUser(User user) {
 
         tableModel.setRowCount(0);
 
-        for (GameCollection c : user.getCollectionList()) {
+        for (GameCollection c : user.getCollectionList())
             tableModel.addRow(new Object[]{c.getName()});
-        }
 
+        gameListView.setTable(new GameList());
     }
 
     public JPanel getPanel() {
