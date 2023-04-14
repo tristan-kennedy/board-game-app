@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 
 public class CollectionPageView {
 
+    private GameCollection currentlyDisplayedCollection;
     private DefaultTableModel tableModel = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -23,6 +24,7 @@ public class CollectionPageView {
     private JPanel collectionGameListViewPanel;
     private JButton saveButton;
     private JButton deleteSelectedButton;
+    private JButton removeSelectedGameButton;
 
 
     public CollectionPageView() {
@@ -51,12 +53,18 @@ public class CollectionPageView {
         collectionsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
-                GameCollection selectedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
-                gameListView.setTable(selectedCollection);
+                if (e.getClickCount() == 2) {
+                    String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
+                    currentlyDisplayedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
+                    gameListView.setTable(currentlyDisplayedCollection);
+                }
             }
-            }
+        });
+
+        removeSelectedGameButton.addActionListener(e -> {
+            int gameID = (int) gameListView.getTableModel().getValueAt(gameListView.getCurrentTable().convertRowIndexToModel(gameListView.getCurrentTable().getSelectedRow()), 4);
+            currentlyDisplayedCollection.remove(GameDatabaseLoader.mainList.getGame(gameID));
+            gameListView.setTable(currentlyDisplayedCollection);
         });
 
         collectionsTable.setModel(tableModel);

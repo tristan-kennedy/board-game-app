@@ -22,9 +22,12 @@ public class GameList implements Iterable<Game> {
      *
      * @param g the Game to be added
      */
-    public void addGame(Game g) {
+    public boolean addGame(Game g) {
+        if(hasGame(g))
+            return false;
         gameList.add(g);
         gameMap.put(g.getID(), g);
+        return true;
     }
 
     // Sort Functionality not needed
@@ -80,6 +83,13 @@ public class GameList implements Iterable<Game> {
     @Override
     public Iterator<Game> iterator() {
         return gameList.iterator();
+    }
+
+    public boolean hasGame(Game testGame) {
+        for(Game game : gameList)
+            if(game == testGame)
+                return true;
+        return false;
     }
 
 }
