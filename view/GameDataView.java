@@ -1,11 +1,13 @@
 package view;
 
+import model.Game;
+import model.GameCollection;
+import model.Review;
+import model.UserDataManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-import model.*;
-
 import java.awt.*;
 import java.net.URL;
 import java.util.HashMap;
@@ -98,7 +100,21 @@ public class GameDataView extends JPanel {
                 Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
                 loadedGameImages.put(g.getID(), scaledImage);
                 imageIcon = new ImageIcon(scaledImage);
-            } catch (Exception e) {
+            }
+
+            catch (IllegalArgumentException e) {
+                try {
+                    URL url = new URL(g.getThumbnail());
+                    Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
+                    loadedGameImages.put(g.getID(), scaledImage);
+                    imageIcon = new ImageIcon(scaledImage);
+                }
+                catch (Exception ee) {
+                    ee.printStackTrace();
+                }
+            }
+
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -116,3 +132,4 @@ public class GameDataView extends JPanel {
             collectionList.addItem(c.getName());
     }
 }
+
