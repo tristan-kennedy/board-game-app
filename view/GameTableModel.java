@@ -68,4 +68,5 @@ class GameTableModel extends AbstractTableModel {
         }
         fireTableDataChanged();
     }
+
 }

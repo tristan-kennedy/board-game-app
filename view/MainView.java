@@ -43,7 +43,9 @@ public class MainView implements SwitchTabListener, LoginLogoutListener {
     public MainView() {
         tabbedPane.setEnabledAt(1, false);
         tabbedPane.setEnabledAt(3, false);
-        tabbedPane.addChangeListener(e -> loginView.clearText());
+        tabbedPane.addChangeListener(e -> {
+            loginView.clearText();
+        });
     }
 
     @Override

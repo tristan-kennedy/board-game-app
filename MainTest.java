@@ -1,3 +1,4 @@
+// import com.formdev.flatlaf.FlatLightLaf;
 import model.*;
 import view.MainView;
 
@@ -12,10 +13,14 @@ public class MainTest {
         UserDataManager.initializeFile();
         UserDataManager.loadReviews();
 
+//        FlatLightLaf.setup();
+//        UIManager.put("Table.showVerticalLines", true);
+//        UIManager.put("Table.showHorizontalLines", true);
+
         JFrame frame = new JFrame("Board Game App");
         frame.setContentPane(new MainView().getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800,800);
+        frame.setSize(800, 800);
         frame.setVisible(true);
 
     }

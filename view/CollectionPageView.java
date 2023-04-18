@@ -53,11 +53,11 @@ public class CollectionPageView {
         collectionsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
-                    currentlyDisplayedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
-                    gameListView.setTable(currentlyDisplayedCollection);
-                }
+            if (e.getClickCount() == 2) {
+                String name = (String) tableModel.getValueAt(collectionsTable.convertRowIndexToModel(collectionsTable.getSelectedRow()), 0);
+                currentlyDisplayedCollection = UserDataManager.currentUser.getGameCollectionByName(name);
+                gameListView.setTable(currentlyDisplayedCollection);
+            }
             }
         });
 

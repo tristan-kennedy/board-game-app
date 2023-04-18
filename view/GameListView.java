@@ -5,7 +5,10 @@ import model.GameDatabaseLoader;
 import model.GameList;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ public class GameListView {
     private JComboBox<String> searchFilter;
     private JScrollPane scrollPane;
     private JButton clearSearch;
-    private GameList gList;
+    private final GameList gList;
 
     private void createUIComponents() {
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
@@ -34,7 +37,26 @@ public class GameListView {
         gList = gameList;
 
         gameTable.getTableHeader().setReorderingAllowed(false);
-        gameTable.getColumnModel().getColumn(0).setCellRenderer(new ImageCellRenderer());
+        gameTable.getTableHeader().setResizingAllowed(false);
+
+        ArrayList<TableColumn> columns = new ArrayList<>();
+        for (int i = 0; i < 4; i++)
+            columns.add(gameTable.getColumnModel().getColumn(i));
+
+        columns.get(0).setCellRenderer(new ImageCellRenderer());
+        columns.get(2).setMinWidth(100);
+        columns.get(2).setMaxWidth(100);
+
+        DefaultTableCellRenderer ratingIconRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                RatingIcon icon = new RatingIcon((float) value);
+                setIcon(icon);
+                return this;
+            }
+        };
+        ratingIconRenderer.setHorizontalAlignment(JLabel.CENTER);
+        columns.get(2).setCellRenderer(ratingIconRenderer);
 
         gameTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,7 +105,7 @@ public class GameListView {
                 case "Category" -> rf = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
-                        Game g = GameDatabaseLoader.mainList.getGame((int) entry.getModel().getValueAt(entry.getIdentifier(), 4));
+                        Game g = gList.getGame((int) entry.getModel().getValueAt(entry.getIdentifier(), 4));
                         for (String category : g.getCategoryList())
                             if (pattern.matcher(category).find()) return true;
                         return false;
@@ -93,7 +115,7 @@ public class GameListView {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         Object[] tableRow = entry.getModel().getRow(entry.getIdentifier());
-                        Game g = GameDatabaseLoader.mainList.getGame((int) tableRow[4]);
+                        Game g = gList.getGame((int) tableRow[4]);
                         for (String mechanic : g.getMechanicList())
                             if (pattern.matcher(mechanic).find()) return true;
                         return false;

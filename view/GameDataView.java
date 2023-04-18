@@ -55,6 +55,7 @@ public class GameDataView extends JPanel {
             ratingTextBox.setText("");
 
             Review review = new Review(rating, reviewText, currentGameOnScreen.getID(), UserDataManager.currentUser.getUserName());
+
             //Add review to game object
             currentGameOnScreen.addReview(review);
 
@@ -64,8 +65,9 @@ public class GameDataView extends JPanel {
             //Save review to XML
             UserDataManager.saveReview(review);
 
-            //Update on screen rating
-            ratingValue.setText(Float.toString(currentGameOnScreen.getRating()));
+            //Update on-screen rating
+            ratingValue.setIcon(new RatingIcon(currentGameOnScreen.getRating()));
+
         });
 
         addGameToCollectionButton.addActionListener(e -> {
@@ -85,7 +87,7 @@ public class GameDataView extends JPanel {
         currentGameOnScreen = g;
 
         gameName.setText(g.getName());
-        ratingValue.setText(Float.toString(g.getRating()));
+        ratingValue.setIcon(new RatingIcon(g.getRating()));
 
         ImageIcon imageIcon = null;
         if (loadedGameImages.containsKey(g.getID()))
