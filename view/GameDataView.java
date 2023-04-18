@@ -4,23 +4,23 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import model.Game;
-import model.GameCollection;
-import model.Review;
-import model.UserDataManager;
+import model.*;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.HashMap;
 
 public class GameDataView extends JPanel {
 
-    private DefaultTableModel tableModel = new DefaultTableModel(){
+    private DefaultTableModel tableModel =  new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
     private Game currentGameOnScreen;
+    private HashMap<Integer, Image> loadedGameImages;
+
     private JPanel gameDataPanel;
     private JLabel gameName;
     private JScrollPane scrollPane;
@@ -35,6 +35,7 @@ public class GameDataView extends JPanel {
     private JComboBox<String> collectionList;
 
     public GameDataView() {
+        loadedGameImages = new HashMap<>();
 
         tableModel.addColumn("Rating");
         tableModel.addColumn("Review");
@@ -87,12 +88,17 @@ public class GameDataView extends JPanel {
         ratingValue.setText(Float.toString(g.getRating()));
 
         ImageIcon imageIcon = null;
-        try {
-            URL url = new URL(g.getFullSizeImage());
-            Image image = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
-            imageIcon = new ImageIcon(image);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (loadedGameImages.containsKey(g.getID()))
+            imageIcon = new ImageIcon(loadedGameImages.get(g.getID()));
+        else {
+            try {
+                URL url = new URL(g.getFullSizeImage());
+                Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
+                loadedGameImages.put(g.getID(), scaledImage);
+                imageIcon = new ImageIcon(scaledImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         infoTextPane.setText("Player Count: " + g.getMinPlayers() + " - " + g.getMaxPlayers() + "\nPlaying Time: " + g.getPlayingTime() + " min" + "\nYear Published: " + g.getYearPublished());
@@ -104,7 +110,7 @@ public class GameDataView extends JPanel {
         }
 
         collectionList.removeAllItems();
-        for(GameCollection c : UserDataManager.currentUser.getCollectionList())
+        for (GameCollection c : UserDataManager.currentUser.getCollectionList())
             collectionList.addItem(c.getName());
     }
 }
