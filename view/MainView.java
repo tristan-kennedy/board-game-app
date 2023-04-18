@@ -30,6 +30,7 @@ public class MainView implements SwitchTabListener, LoginLogoutListener {
 
         gameDataView = new GameDataView();
         gameDataViewPanel = gameDataView.getPanel();
+        gameDataView.addSwitchTabListener(this);
 
         loginView = new LoginView();
         loginView.addLoginLogoutListener(this);

@@ -1,18 +1,18 @@
 package view;
 
-import model.Game;
-import model.GameCollection;
-import model.Review;
-import model.UserDataManager;
+import model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.HashMap;
 
 public class GameDataView extends JPanel {
+
+    private SwitchTabListener listener;
 
     private DefaultTableModel tableModel =  new DefaultTableModel() {
         @Override
@@ -70,17 +70,10 @@ public class GameDataView extends JPanel {
 
             //Update on-screen rating
             ratingValue.setIcon(new RatingIcon(currentGameOnScreen.getRating()));
-
         });
 
-        addGameToCollectionButton.addActionListener(e -> {
-            String collectionSelection = (String) collectionList.getSelectedItem();
-            UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
-        });
-    }
-
-    public JPanel getPanel() {
-        return gameDataPanel;
+        addGameToCollectionButton.setText("Login to Use Collections");
+        addGameToCollectionButton.addActionListener(e -> listener.switchTab(2, currentGameOnScreen));
     }
 
     public void setGame(Game g) {
@@ -92,10 +85,15 @@ public class GameDataView extends JPanel {
         gameName.setText(g.getName());
         ratingValue.setIcon(new RatingIcon(g.getRating()));
 
+        // Set Game Image
         ImageIcon imageIcon = null;
+
+        // Game image has already been loaded
         if (loadedGameImages.containsKey(g.getID()))
             imageIcon = new ImageIcon(loadedGameImages.get(g.getID()));
+        // Game image needs to be loaded
         else {
+            // Load full-size image
             try {
                 URL url = new URL(g.getFullSizeImage());
                 Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
@@ -103,7 +101,9 @@ public class GameDataView extends JPanel {
                 imageIcon = new ImageIcon(scaledImage);
             }
 
+            // Occurs on a few of the game's full size images
             catch (IllegalArgumentException e) {
+                // Load the game's thumbnail and scale it up instead
                 try {
                     URL url = new URL(g.getThumbnail());
                     Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
@@ -119,24 +119,53 @@ public class GameDataView extends JPanel {
                 e.printStackTrace();
             }
         }
-
-        infoTextPane.setText("Player Count: " + g.getMinPlayers() + " - " + g.getMaxPlayers() + "\nPlaying Time: " + g.getPlayingTime() + " min" + "\nYear Published: " + g.getYearPublished());
-
         imageLabel.setIcon(imageIcon);
 
-        for (Review r : g.getReviewList()) {
-            tableModel.addRow(new Object[]{(float) r.getRating(), r.getReviewText(), r.getUserName()});
-        }
+        // Set the game info text
+        infoTextPane.setText("Player Count: " + g.getMinPlayers() + " - " + g.getMaxPlayers() + "\nPlaying Time: " + g.getPlayingTime() + " min" + "\nYear Published: " + g.getYearPublished());
 
-        collectionList.removeAllItems();
-        for (GameCollection c : UserDataManager.currentUser.getCollectionList())
-            collectionList.addItem(c.getName());
+        // Populate Reviews
+        for (Review r : g.getReviewList())
+            tableModel.addRow(new Object[]{(float) r.getRating(), r.getReviewText(), r.getUserName()});
+
+        // Enable/disable the add to collection button and populate the dropdown with collections
+        updateCollectionsMenu();
     }
 
     public void updateCollectionsMenu() {
+        // Empty Collection List
         collectionList.removeAllItems();
-        for (GameCollection c : UserDataManager.currentUser.getCollectionList())
-            collectionList.addItem(c.getName());
+
+        // Clear all button listeners
+        for (ActionListener l : addGameToCollectionButton.getActionListeners())
+            addGameToCollectionButton.removeActionListener(l);
+
+        User u = UserDataManager.currentUser;
+        // Not logged in - Change button to switch to login page
+        if (u.getUserName().equals("Guest")) {
+            collectionList.setEnabled(false);
+            addGameToCollectionButton.setText("Login to Use Collections");
+            addGameToCollectionButton.addActionListener(e -> listener.switchTab(2, currentGameOnScreen));
+        }
+        // Logged in - Change button to default functionality
+        else {
+            for (GameCollection c : u.getCollectionList())
+                collectionList.addItem(c.getName());
+            collectionList.setEnabled(true);
+            addGameToCollectionButton.setText("Add To Collection");
+            addGameToCollectionButton.addActionListener(e -> {
+                String collectionSelection = (String) collectionList.getSelectedItem();
+                UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
+            });
+        }
+    }
+
+    public JPanel getPanel() {
+        return gameDataPanel;
+    }
+
+    public void addSwitchTabListener(SwitchTabListener stl) {
+        listener = stl;
     }
 }
 
