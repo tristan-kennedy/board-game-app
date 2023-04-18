@@ -59,7 +59,6 @@ public class GameListView {
         sorter.sort();
 
 
-
         clearSearch.addActionListener(e -> {
             searchBox.setText("");
             sorter.setRowFilter(null);
@@ -110,22 +109,19 @@ public class GameListView {
         return gameListPanel;
     }
 
-    /**
-     * Returns the top-rated game in the table
-     * @return the top-rated game in the table
-     */
-    public Game getTopRatedGame() {
-        int topGameID = (int) tableModel.getValueAt(gameTable.convertRowIndexToModel(0), 4);
-        return GameDatabaseLoader.mainList.getGame(topGameID);
-    }
-
     public void addSwitchTabListener(SwitchTabListener stl) {
         listener = stl;
     }
 
-    public void setTable(GameList gameList){
+    public void setTable(GameList gameList) {
         tableModel.setTableData(gameList);
     }
 
+    public JTable getCurrentTable() {
+        return gameTable;
+    }
 
+    public GameTableModel getTableModel() {
+        return tableModel;
+    }
 }

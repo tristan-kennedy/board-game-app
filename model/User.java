@@ -62,14 +62,14 @@ public class User {
 
     public GameCollection getGameCollectionByName(String name) {
         for (GameCollection c : collectionList)
-            if (c.getName() == name)
+            if (c.getName().equals(name))
                 return c;
         return null;
     }
 
     public boolean hasCollection(String name) {
         for (GameCollection c : collectionList)
-            if(c.getName() == name)
+            if(c.getName().equals(name))
                 return true;
         return  false;
     }
