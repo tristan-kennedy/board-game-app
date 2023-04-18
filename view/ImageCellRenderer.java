@@ -8,6 +8,8 @@ import java.net.URL;
 
 public class ImageCellRenderer extends DefaultTableCellRenderer {
 
+    public static final Color GREY_SELECTED = new Color(200, 200, 200);
+
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String photoName = value.toString();
@@ -20,6 +22,11 @@ public class ImageCellRenderer extends DefaultTableCellRenderer {
             e.printStackTrace();
         }
 
-        return new JLabel(imageIcon);
+        if (isSelected) setBackground(GREY_SELECTED);
+        else setBackground(UIManager.getColor("Table.background"));
+        setIcon(imageIcon);
+        setHorizontalAlignment(JLabel.CENTER);
+        return this;
     }
+
 }

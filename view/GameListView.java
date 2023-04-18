@@ -1,7 +1,6 @@
 package view;
 
 import model.Game;
-import model.GameDatabaseLoader;
 import model.GameList;
 
 import javax.swing.*;
@@ -39,6 +38,8 @@ public class GameListView {
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getTableHeader().setResizingAllowed(false);
 
+        gameTable.setSelectionBackground(ImageCellRenderer.GREY_SELECTED);
+
         ArrayList<TableColumn> columns = new ArrayList<>();
         for (int i = 0; i < 4; i++)
             columns.add(gameTable.getColumnModel().getColumn(i));
@@ -52,6 +53,8 @@ public class GameListView {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 RatingIcon icon = new RatingIcon((float) value);
                 setIcon(icon);
+                if (isSelected) setBackground(ImageCellRenderer.GREY_SELECTED);
+                else setBackground(UIManager.getColor("Table.background"));
                 return this;
             }
         };
@@ -63,7 +66,7 @@ public class GameListView {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int gameID = (int) tableModel.getValueAt(gameTable.convertRowIndexToModel(gameTable.getSelectedRow()), 4);
-                    Game g = GameDatabaseLoader.mainList.getGame(gameID);
+                    Game g = gList.getGame(gameID);
                     listener.switchTab(1, g);
                 }
             }
