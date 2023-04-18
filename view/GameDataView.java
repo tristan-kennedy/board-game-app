@@ -30,7 +30,7 @@ public class GameDataView extends JPanel {
     private JTextPane infoTextPane;
     private JTable reviewTable;
     private JSlider ratingSlider;
-    private JTextField ratingTextBox;
+    private JTextArea ratingTextBox;
     private JButton ratingSubmitButton;
     private JButton addGameToCollectionButton;
     private JLabel ratingValue;
@@ -46,6 +46,7 @@ public class GameDataView extends JPanel {
         reviewTable.setModel(tableModel);
 
         reviewTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        reviewTable.getColumnModel().getColumn(0).setCellRenderer(new RatingCellRenderer());
         reviewTable.setRowHeight(30);
         reviewTable.getTableHeader().setReorderingAllowed(false);
 
@@ -62,7 +63,7 @@ public class GameDataView extends JPanel {
             currentGameOnScreen.addReview(review);
 
             //Add review to screen
-            tableModel.addRow(new Object[]{rating, reviewText, UserDataManager.currentUser.getUserName()});
+            tableModel.addRow(new Object[]{(float) rating, reviewText, UserDataManager.currentUser.getUserName()});
 
             //Save review to XML
             UserDataManager.saveReview(review);
@@ -73,7 +74,7 @@ public class GameDataView extends JPanel {
         });
 
         addGameToCollectionButton.addActionListener(e -> {
-            String collectionSelection = collectionList.getSelectedItem().toString();
+            String collectionSelection = (String) collectionList.getSelectedItem();
             UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
         });
     }
@@ -124,9 +125,15 @@ public class GameDataView extends JPanel {
         imageLabel.setIcon(imageIcon);
 
         for (Review r : g.getReviewList()) {
-            tableModel.addRow(new Object[]{r.getRating(), r.getReviewText(), r.getUserName()});
+            tableModel.addRow(new Object[]{(float) r.getRating(), r.getReviewText(), r.getUserName()});
         }
 
+        collectionList.removeAllItems();
+        for (GameCollection c : UserDataManager.currentUser.getCollectionList())
+            collectionList.addItem(c.getName());
+    }
+
+    public void updateCollectionsMenu() {
         collectionList.removeAllItems();
         for (GameCollection c : UserDataManager.currentUser.getCollectionList())
             collectionList.addItem(c.getName());

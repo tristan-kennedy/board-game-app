@@ -62,7 +62,8 @@ public class CollectionPageView {
         });
 
         removeSelectedGameButton.addActionListener(e -> {
-            int gameID = (int) gameListView.getTableModel().getValueAt(gameListView.getCurrentTable().convertRowIndexToModel(gameListView.getCurrentTable().getSelectedRow()), 4);
+            JTable gameTable = gameListView.getCurrentTable();
+            int gameID = (int) gameTable.getModel().getValueAt(gameTable.convertRowIndexToModel(gameTable.getSelectedRow()), 4);
             currentlyDisplayedCollection.remove(GameDatabaseLoader.mainList.getGame(gameID));
             gameListView.setTable(currentlyDisplayedCollection);
         });
