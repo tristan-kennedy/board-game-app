@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class GameListView {
     private final GameList gList;
 
     private void createUIComponents() {
+        searchBox = new JTextField("Search");
         searchFilter = new JComboBox<>(new String[]{"Name", "Category", "Mechanic"});
         tableModel = new GameTableModel(gList);
         gameTable = new JTable(tableModel);
@@ -36,6 +39,7 @@ public class GameListView {
     public GameListView(GameList gameList) {
         gList = gameList;
 
+        gameTable.setMinimumSize(new Dimension(750,750));
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getTableHeader().setResizingAllowed(false);
         gameTable.setSelectionBackground(ImageCellRenderer.GREY_SELECTED);
@@ -91,12 +95,32 @@ public class GameListView {
 
 
         clearSearch.addActionListener(e -> {
-            searchBox.setText("");
+            searchBox.setForeground(Color.GRAY);
+            searchBox.setText("Search");
+            searchFilter.setSelectedIndex(0);
             sorter.setRowFilter(null);
         });
 
+        searchBox.setText("Search");
+        searchBox.setForeground(Color.GRAY);
+        searchBox.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchBox.getText().equals("Search")) {
+                    searchBox.setText("");
+                    searchBox.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchBox.getText().isEmpty()) {
+                    searchBox.setForeground(Color.GRAY);
+                    searchBox.setText("Search");
+                }
+            }
+        });
         searchBox.addActionListener(e -> {
-            String filter = searchFilter.getSelectedItem().toString();
+            String filter = (String) searchFilter.getSelectedItem();
             String text = searchBox.getText();
 
             Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
