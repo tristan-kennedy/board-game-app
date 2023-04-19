@@ -17,6 +17,7 @@ public class RatingIcon implements Icon {
 
     public RatingIcon(float numRating) {
         rating = String.format("%.1f", numRating);
+        if (numRating == 10)        rating = "10";
         if (numRating >= 8)         color = GREEN;
         else if (numRating >= 5)    color = BLUE;
         else if (numRating >= 1)    color = RED;

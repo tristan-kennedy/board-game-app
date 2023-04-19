@@ -1,13 +1,12 @@
 package view;
 
 import model.Game;
+import model.GameDatabaseLoader;
 import model.GameList;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -40,33 +39,33 @@ public class GameListView {
 
         gameTable.setSelectionBackground(ImageCellRenderer.GREY_SELECTED);
 
+        // Put the table columns in a list
         ArrayList<TableColumn> columns = new ArrayList<>();
         for (int i = 0; i < 4; i++)
             columns.add(gameTable.getColumnModel().getColumn(i));
 
+        // Thumbnail column
         columns.get(0).setCellRenderer(new ImageCellRenderer());
+
+        // Name column
+        columns.get(1).setCellRenderer(new GameNameRenderer());
+        columns.get(1).setMinWidth(400);
+
+        // Rating column
         columns.get(2).setMinWidth(100);
         columns.get(2).setMaxWidth(100);
+        columns.get(2).setCellRenderer(new RatingCellRenderer());
 
-        DefaultTableCellRenderer ratingIconRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                RatingIcon icon = new RatingIcon((float) value);
-                setIcon(icon);
-                if (isSelected) setBackground(ImageCellRenderer.GREY_SELECTED);
-                else setBackground(UIManager.getColor("Table.background"));
-                return this;
-            }
-        };
-        ratingIconRenderer.setHorizontalAlignment(JLabel.CENTER);
-        columns.get(2).setCellRenderer(ratingIconRenderer);
+        // Adjust row height to be slightly more than tallest image
+        gameTable.setRowHeight(160);
+
 
         gameTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int gameID = (int) tableModel.getValueAt(gameTable.convertRowIndexToModel(gameTable.getSelectedRow()), 4);
-                    Game g = gList.getGame(gameID);
+                    Game g = GameDatabaseLoader.mainList.getGame(gameID); // Uses master list
                     listener.switchTab(1, g);
                 }
             }
@@ -146,7 +145,4 @@ public class GameListView {
         return gameTable;
     }
 
-    public GameTableModel getTableModel() {
-        return tableModel;
-    }
 }

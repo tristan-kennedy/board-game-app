@@ -25,7 +25,6 @@
               <cellSelectionEnabled value="false"/>
               <focusable value="false"/>
               <minimumSize width="150" height="750"/>
-              <rowHeight value="150"/>
               <rowSelectionAllowed value="true"/>
               <selectionBackground color="-3618616"/>
             </properties>
