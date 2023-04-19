@@ -5,8 +5,10 @@ import model.GameDatabaseLoader;
 import model.GameList;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public class GameListView {
 
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getTableHeader().setResizingAllowed(false);
-
         gameTable.setSelectionBackground(ImageCellRenderer.GREY_SELECTED);
+        gameTable.setFont(UIManager.getFont("Table.font").deriveFont(Font.PLAIN, 16));
 
         // Put the table columns in a list
         ArrayList<TableColumn> columns = new ArrayList<>();
@@ -45,20 +47,25 @@ public class GameListView {
             columns.add(gameTable.getColumnModel().getColumn(i));
 
         // Thumbnail column
+        columns.get(0).setMinWidth(200);
         columns.get(0).setCellRenderer(new ImageCellRenderer());
 
         // Name column
-        columns.get(1).setCellRenderer(new GameNameRenderer());
         columns.get(1).setMinWidth(400);
+        columns.get(1).setCellRenderer(new GameNameRenderer());
 
         // Rating column
         columns.get(2).setMinWidth(100);
         columns.get(2).setMaxWidth(100);
         columns.get(2).setCellRenderer(new RatingCellRenderer());
 
+        // Players columns
+        DefaultTableCellRenderer centeredTextRenderer = new DefaultTableCellRenderer();
+        centeredTextRenderer.setHorizontalAlignment(JLabel.CENTER);
+        columns.get(3).setCellRenderer(centeredTextRenderer);
+
         // Adjust row height to be slightly more than tallest image
         gameTable.setRowHeight(160);
-
 
         gameTable.addMouseListener(new MouseAdapter() {
             @Override
