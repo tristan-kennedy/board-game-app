@@ -82,22 +82,13 @@ public class GameListView {
             }
         });
 
-        TableRowSorter<GameTableModel> sorter = new TableRowSorter<>(tableModel);
-        sorter.setSortable(0, false);
-        gameTable.setRowSorter(sorter);
-
-        // Default Sort: Rating (High-Low), Name (Alphabetical)
-        ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
-        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
-        sorter.sort();
-
+        defaultSort();
 
         clearSearch.addActionListener(e -> {
             searchBox.setForeground(Color.GRAY);
             searchBox.setText("Search");
             searchFilter.setSelectedIndex(0);
+            TableRowSorter<GameTableModel> sorter = (TableRowSorter<GameTableModel>) gameTable.getRowSorter();
             sorter.setRowFilter(null);
         });
 
@@ -156,9 +147,12 @@ public class GameListView {
                 };
             }
 
+            TableRowSorter<GameTableModel> sorter = (TableRowSorter<GameTableModel>) gameTable.getRowSorter();
             sorter.setRowFilter(rf);
         });
     }
+
+
 
     public JPanel getPanel() {
         return gameListPanel;
@@ -176,4 +170,27 @@ public class GameListView {
         return gameTable;
     }
 
+    public void updateTableData(Game g) {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            int gameID = (int) tableModel.getValueAt(i, 4);
+            if (g.getID() == gameID) {
+                tableModel.setValueAt(g.getRating(), i, 2);
+                break;
+            }
+        }
+        defaultSort();
+    }
+
+    public void defaultSort() {
+        TableRowSorter<GameTableModel> sorter = new TableRowSorter<>(tableModel);
+        sorter.setSortable(0, false);
+        gameTable.setRowSorter(sorter);
+
+        // Default Sort: Rating (High-Low), Name (Alphabetical)
+        ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }
 }

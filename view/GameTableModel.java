@@ -55,18 +55,23 @@ class GameTableModel extends AbstractTableModel {
         return tableData.get(rowIndex);
     }
 
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        tableData.get(rowIndex)[columnIndex] = aValue;
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
     public void setTableData(GameList gameList){
         tableData = new ArrayList<>();
         for (Game g : gameList) {
             tableData.add(new Object[]{
-                    g.getThumbnail(),
-                    g.getName() + " (" + g.getYearPublished() + ")",
-                    g.getRating(),
-                    g.getMinPlayers() + "-" + g.getMaxPlayers(),
-                    g.getID()
+                g.getThumbnail(),
+                g.getName() + " (" + g.getYearPublished() + ")",
+                g.getRating(),
+                g.getMinPlayers() + "-" + g.getMaxPlayers(),
+                g.getID()
             });
         }
         fireTableDataChanged();
     }
-
 }

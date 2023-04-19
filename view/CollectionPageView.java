@@ -94,4 +94,8 @@ public class CollectionPageView {
     public void addSwitchTabListener(SwitchTabListener tsl) {
         gameListView.addSwitchTabListener(tsl);
     }
+
+    public void updateTableData(Game g) {
+        gameListView.updateTableData(g);
+    }
 }

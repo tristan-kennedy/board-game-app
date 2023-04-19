@@ -10,16 +10,12 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.HashMap;
 
-public class GameDataView extends JPanel {
+public class GameDataView {
 
-    private SwitchTabListener listener;
+    private ReviewListener revListener;
+    private SwitchTabListener stListener;
 
-    private DefaultTableModel tableModel =  new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
+    private DefaultTableModel tableModel =  new DefaultTableModel() { @Override public boolean isCellEditable(int row, int column) { return false; } };
     private Game currentGameOnScreen;
     private HashMap<Integer, Image> loadedGameImages;
 
@@ -70,10 +66,14 @@ public class GameDataView extends JPanel {
 
             //Update on-screen rating
             ratingValue.setIcon(new RatingIcon(currentGameOnScreen.getRating()));
+
+            // Notify game tables to update review data for this game
+            revListener.updateTableData(currentGameOnScreen);
+
         });
 
         addGameToCollectionButton.setText("Login to Use Collections");
-        addGameToCollectionButton.addActionListener(e -> listener.switchTab(2, currentGameOnScreen));
+        addGameToCollectionButton.addActionListener(e -> stListener.switchTab(2, currentGameOnScreen));
     }
 
     public void setGame(Game g) {
@@ -145,7 +145,7 @@ public class GameDataView extends JPanel {
         if (u.getUserName().equals("Guest")) {
             collectionList.setEnabled(false);
             addGameToCollectionButton.setText("Login to Use Collections");
-            addGameToCollectionButton.addActionListener(e -> listener.switchTab(2, currentGameOnScreen));
+            addGameToCollectionButton.addActionListener(e -> stListener.switchTab(2, currentGameOnScreen));
         }
         // Logged in - Change button to default functionality
         else {
@@ -165,7 +165,11 @@ public class GameDataView extends JPanel {
     }
 
     public void addSwitchTabListener(SwitchTabListener stl) {
-        listener = stl;
+        stListener = stl;
+    }
+
+    public void addReviewListener(ReviewListener rl) {
+        revListener = rl;
     }
 }
 
