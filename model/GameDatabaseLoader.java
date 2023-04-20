@@ -1,3 +1,4 @@
+//Design Pattern: Singleton
 package model;
 
 import view.FuzzySearchConvertor;

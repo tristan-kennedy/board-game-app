@@ -1,3 +1,4 @@
+//Design Pattern: Observer
 package view;
 
 import model.Game;

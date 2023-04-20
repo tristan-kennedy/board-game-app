@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 public class GameListView {
 
     private SwitchTabListener listener;
-
     private JPanel gameListPanel;
     private JTable gameTable;
     private GameTableModel tableModel;

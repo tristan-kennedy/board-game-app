@@ -1,3 +1,4 @@
+//Design Pattern: Singleton
 package model;
 
 import org.w3c.dom.*;
