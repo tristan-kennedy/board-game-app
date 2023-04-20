@@ -26,7 +26,7 @@ public final class UserDataManager {
     private UserDataManager() {}
 
     /**
-     * Default constructor which initializes the userFilePath based upon config.txt
+     * Initializes the userFilePath based upon config.txt
      */
     public static void initializeFile() {
         String line = "";
