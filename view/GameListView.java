@@ -68,7 +68,7 @@ public class GameListView {
         centeredTextRenderer.setHorizontalAlignment(JLabel.CENTER);
         columns.get(3).setCellRenderer(centeredTextRenderer);
 
-        // Adjust row height to be slightly more than tallest image
+        // Adjust row height to be slightly more than the tallest image
         gameTable.setRowHeight(160);
 
         gameTable.addMouseListener(new MouseAdapter() {
@@ -112,7 +112,10 @@ public class GameListView {
         });
         searchBox.addActionListener(e -> {
             String filter = (String) searchFilter.getSelectedItem();
-            String text = searchBox.getText();
+            String text = searchBox.getText().toLowerCase();
+
+            text = FuzzySearchConvertor.fuzzyCorrect(text);
+            searchBox.setText(text.substring(0,1).toUpperCase() + text.substring(1));
 
             Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
 
@@ -193,4 +196,5 @@ public class GameListView {
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
+
 }
