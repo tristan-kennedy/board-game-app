@@ -6,3 +6,5 @@ Members:
 Tristan Kennedy
 Steven Walter
 Jackson Cowart
+
+Written in Java 19 using IntelliJ
