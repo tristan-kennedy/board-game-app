@@ -1,3 +1,4 @@
+//Design Pattern: Composite
 package view;
 
 import model.*;

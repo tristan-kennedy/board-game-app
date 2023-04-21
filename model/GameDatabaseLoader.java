@@ -1,4 +1,7 @@
+//Design Pattern: Singleton
 package model;
+
+import view.FuzzySearchConvertor;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -104,8 +107,10 @@ public final class GameDatabaseLoader {
                         // <name value="name"/>
                         case "name" -> {
                             // Make sure we're only using the "primary" name
-                            if (element.getAttributeByName(new QName("type")).getValue().equals("primary"))
+                            if (element.getAttributeByName(new QName("type")).getValue().equals("primary")) {
                                 name = element.getAttributeByName(new QName("value")).getValue().trim();
+                                FuzzySearchConvertor.addDictionaryValue(name);
+                            }
                         }
 
                         // <description>
@@ -141,10 +146,14 @@ public final class GameDatabaseLoader {
                         // <link type="boardgameXXXXXXX" value="XXXXXXXXXXXXX"/>
                         case "link" -> {
                             String type = element.getAttributeByName(new QName("type")).getValue();
-                            if (type.equals("boardgamecategory"))
+                            if (type.equals("boardgamecategory")){
                                 categoryList.add(element.getAttributeByName(new QName("value")).getValue());
-                            if (type.equals("boardgamemechanic"))
+                                FuzzySearchConvertor.addDictionaryValue(element.getAttributeByName(new QName("value")).getValue());
+                            }
+                            if (type.equals("boardgamemechanic")) {
                                 mechanicList.add(element.getAttributeByName(new QName("value")).getValue());
+                                FuzzySearchConvertor.addDictionaryValue(element.getAttributeByName(new QName("value")).getValue());
+                            }
                         }
                     }
                 }

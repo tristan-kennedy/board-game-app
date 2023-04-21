@@ -1,5 +1,6 @@
 // import com.formdev.flatlaf.FlatLightLaf;
 import model.*;
+import view.FuzzySearchConvertor;
 import view.MainView;
 
 import javax.swing.*;
@@ -12,6 +13,8 @@ public class MainTest {
 
         UserDataManager.initializeFile();
         UserDataManager.loadReviews();
+
+        FuzzySearchConvertor.initializeFuzzySearch();
 
 //        FlatLightLaf.setup();
 //        UIManager.put("Table.showVerticalLines", true);

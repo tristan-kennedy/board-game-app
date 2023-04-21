@@ -47,6 +47,7 @@ public class Game {
 
     /**
      * Adds a Review to the reviewList and updates the Game's rating
+     *
      * @param r the Review to be added
      */
     public void addReview(Review r) {
@@ -177,5 +178,12 @@ public class Game {
         return rating;
     }
 
-    public ArrayList<Review> getReviewList() { return reviewList; }
+    /**
+     * Returns the list of reviews associated with a game
+     *
+     * @return reviewList ArrayList<Review>
+     */
+    public ArrayList<Review> getReviewList() {
+        return reviewList;
+    }
 }

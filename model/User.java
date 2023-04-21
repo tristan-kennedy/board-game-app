@@ -60,6 +60,11 @@ public class User {
         collectionList.remove(collection);
     }
 
+    /**
+     * Gets a collection from the users collections via a String name
+     * @param name String
+     * @return The GameCollection that matches the given name
+     */
     public GameCollection getGameCollectionByName(String name) {
         for (GameCollection c : collectionList)
             if (c.getName().equals(name))
@@ -67,6 +72,11 @@ public class User {
         return null;
     }
 
+    /**
+     * Returns true if the user has the collection given a name, returns false otherwise
+     * @param name String
+     * @return Boolean for user hasCollection
+     */
     public boolean hasCollection(String name) {
         for (GameCollection c : collectionList)
             if(c.getName().equals(name))
