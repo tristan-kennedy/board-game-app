@@ -31,6 +31,11 @@ public class CollectionPageView {
     private JPanel collectionsHeader;
     private JPanel collectionButtons;
 
+    private void createUIComponents() {
+        gameListView = new GameListView(new GameList());
+        collectionGameListViewPanel = gameListView.getPanel();
+    }
+
     public CollectionPageView() {
         currentlyDisplayedCollection = null;
 
@@ -61,6 +66,7 @@ public class CollectionPageView {
         // Add Collection Button
         int height = addCollectionName.getPreferredSize().height;
         addCollectionButton.setPreferredSize(new Dimension(height, height));
+
         // Draw a + sign in the button
         addCollectionButton.setIcon(new Icon() {
             @Override
@@ -124,7 +130,6 @@ public class CollectionPageView {
     }
 
     public void setCurrentUser(User user) {
-
         tableModel.setRowCount(0);
 
         for (GameCollection c : user.getCollectionList())
@@ -135,11 +140,6 @@ public class CollectionPageView {
 
     public JPanel getPanel() {
         return collectionPagePanel;
-    }
-
-    private void createUIComponents() {
-        gameListView = new GameListView(new GameList());
-        collectionGameListViewPanel = gameListView.getPanel();
     }
 
     public void addSwitchTabListener(SwitchTabListener tsl) {

@@ -35,6 +35,10 @@ public class GameListView {
         gameTable = new JTable(tableModel);
     }
 
+    /**
+     * Constructs a GameListView and its sorted table from a gameList
+     * @param gameList the gameList to create the table from
+     */
     public GameListView(GameList gameList) {
         gList = gameList;
 
@@ -70,6 +74,7 @@ public class GameListView {
         // Adjust row height to be slightly more than the tallest image
         gameTable.setRowHeight(160);
 
+        // Double click row functionality, takes you to the game's details page
         gameTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -80,9 +85,9 @@ public class GameListView {
                 }
             }
         });
-
         defaultSort();
 
+        // Clear search wipes the sorter and empties the search box
         clearSearch.addActionListener(e -> {
             searchBox.setForeground(Color.GRAY);
             searchBox.setText("Search");
@@ -91,6 +96,7 @@ public class GameListView {
             sorter.setRowFilter(null);
         });
 
+        // Add "Search" placeholder text
         searchBox.setText("Search");
         searchBox.setForeground(Color.GRAY);
         searchBox.addFocusListener(new FocusListener() {
@@ -109,18 +115,21 @@ public class GameListView {
                 }
             }
         });
+        // Search functionality
         searchBox.addActionListener(e -> {
             String filter = (String) searchFilter.getSelectedItem();
             String text = searchBox.getText().toLowerCase();
 
-            text = FuzzySearchConvertor.fuzzyCorrect(text);
-            searchBox.setText(text.substring(0,1).toUpperCase() + text.substring(1));
+            text = FuzzySearchConvertor.fuzzyCorrect(text); // Converts search string to "fuzzy" string
+            searchBox.setText(text.substring(0,1).toUpperCase() + text.substring(1)); // Capitalizes the search term
 
+            // Ignore case for matching
             Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
 
             RowFilter<GameTableModel, Integer> rf = null;
 
             switch (filter) {
+                // Name option selected
                 case "Name" -> rf = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
@@ -128,6 +137,7 @@ public class GameListView {
                         return pattern.matcher(name).find();
                     }
                 };
+                // Category option selected
                 case "Category" -> rf = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
@@ -137,6 +147,7 @@ public class GameListView {
                         return false;
                     }
                 };
+                // Mechanic option selected
                 case "Mechanic" -> rf = new RowFilter<>() {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
@@ -148,30 +159,47 @@ public class GameListView {
                     }
                 };
             }
-
             TableRowSorter<GameTableModel> sorter = (TableRowSorter<GameTableModel>) gameTable.getRowSorter();
             sorter.setRowFilter(rf);
         });
     }
 
-
-
+    /**
+     * Returns the gameListPanel
+     * @return the gameListPanel
+     */
     public JPanel getPanel() {
         return gameListPanel;
     }
 
+    /**
+     * Adds a switch tab listener
+     * @param stl the switch tab listener to be added
+     */
     public void addSwitchTabListener(SwitchTabListener stl) {
         listener = stl;
     }
 
+    /**
+     * Sets the table to a different gameList. Can also be used with the same gameList to refresh the table
+     * @param gameList the gameList to be shown in the table
+     */
     public void setTable(GameList gameList) {
         tableModel.setTableData(gameList);
     }
 
+    /**
+     * Returns the currently used JTable
+     * @return the currently used JtTable
+     */
     public JTable getCurrentTable() {
         return gameTable;
     }
 
+    /**
+     * Updates the table data for a specific game (usually for after a new review is added)
+     * @param g the game whose table data should be updated
+     */
     public void updateTableData(Game g) {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             int gameID = (int) tableModel.getValueAt(i, 4);
@@ -183,6 +211,9 @@ public class GameListView {
         defaultSort();
     }
 
+    /**
+     * Sorts the table first by rating and then lexicographically
+     */
     public void defaultSort() {
         TableRowSorter<GameTableModel> sorter = new TableRowSorter<>(tableModel);
         sorter.setSortable(0, false);
