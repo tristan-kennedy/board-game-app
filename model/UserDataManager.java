@@ -154,8 +154,9 @@ public final class UserDataManager {
      * @return Boolean true if account creation success, false otherwise
      */
     public static Boolean createAccount(String userName, String password) {
-        if(userName == "Guest")
-            return  false;
+        if(userName.equals("Guest"))
+            return false;
+
         //Call to private class which initializes an XML Doc
         Document doc = initializeXMLDoc(userFilepath);
 

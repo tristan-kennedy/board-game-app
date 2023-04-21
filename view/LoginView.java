@@ -14,7 +14,7 @@ public class LoginView {
     private ArrayList<LoginLogoutListener> logListeners;
     private JPanel loginPanel;
     private JTextField usernameTextField;
-    private JTextField passwordTextField;
+    private JPasswordField passwordTextField;
     private JLabel loginLabel;
     private JButton loginButton;
     private JButton createAccountButton;
@@ -31,41 +31,43 @@ public class LoginView {
 
         loginButton.addActionListener(e -> {
             String userName = usernameTextField.getText();
-            String password = passwordTextField.getText();
+            String password = new String(passwordTextField.getPassword());
 
             usernameTextField.setText("");
             passwordTextField.setText("");
 
-            if (UserDataManager.login(userName, password)) {
-                // Login successful
-                errorLabel.setForeground(GREEN);
-                errorLabel.setText("Login Successful");
-                for (LoginLogoutListener logListener : logListeners)
-                    logListener.onLogin();
-                updateButtons();
-            } else {
-                // Login failed
-                errorLabel.setForeground(RED);
-                errorLabel.setText("Incorrect Login Info");
+            if (isNotEmpty(userName, password)) {
+                if (UserDataManager.login(userName, password)) {
+                    // Login successful
+                    errorLabel.setForeground(GREEN);
+                    errorLabel.setText("Login Successful");
+                    for (LoginLogoutListener logListener : logListeners)
+                        logListener.onLogin();
+                    updateButtons();
+                } else {
+                    // Login failed
+                    errorLabel.setForeground(RED);
+                    errorLabel.setText("Incorrect Login Info");
+                }
             }
-
         });
 
         createAccountButton.addActionListener(e -> {
             String userName = usernameTextField.getText();
-            String password = passwordTextField.getText();
+            String password = new String(passwordTextField.getPassword());
 
             usernameTextField.setText("");
             passwordTextField.setText("");
 
-            if (!(UserDataManager.createAccount(userName, password))) {
-                errorLabel.setForeground(RED);
-                errorLabel.setText("Username Already Taken");
-            } else {
-                errorLabel.setForeground(GREEN);
-                errorLabel.setText("Account Created");
+            if (isNotEmpty(userName, password)) {
+                if (UserDataManager.createAccount(userName, password)) {
+                    errorLabel.setForeground(GREEN);
+                    errorLabel.setText("Account Created");
+                } else {
+                    errorLabel.setForeground(RED);
+                    errorLabel.setText("Username Already Taken");
+                }
             }
-
         });
 
         logoutButton.addActionListener(e -> {
@@ -104,4 +106,17 @@ public class LoginView {
         logoutButton.setEnabled(isLoggingIn);
     }
 
+    private boolean isNotEmpty(String username, String password) {
+        if (username.length() == 0) {
+            errorLabel.setForeground(RED);
+            errorLabel.setText("Username cannot be blank");
+            return false;
+        }
+        if (password.length() == 0) {
+            errorLabel.setForeground(RED);
+            errorLabel.setText("Password cannot be blank");
+            return false;
+        }
+        return true;
+    }
 }
