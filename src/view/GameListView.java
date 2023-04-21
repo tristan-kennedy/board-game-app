@@ -126,7 +126,6 @@ public class GameListView {
             String text = searchBox.getText().toLowerCase();
 
             String fuzzyText = FuzzySearchConvertor.fuzzyCorrect(text); // Converts search string to "fuzzy" string
-            searchBox.setText(text.substring(0, 1).toUpperCase() + text.substring(1)); // Capitalizes the search term
 
             // Ignore case for matching
             Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
