@@ -11,16 +11,7 @@ class GameTableModel extends AbstractTableModel {
     private ArrayList<Object[]> tableData;
 
     public GameTableModel(GameList gList) {
-        tableData = new ArrayList<>();
-        for (Game g : gList) {
-            tableData.add(new Object[]{
-                    g.getThumbnail(),
-                    g.getName() + " (" + g.getYearPublished() + ")",
-                    g.getRating(),
-                    g.getMinPlayers() + "-" + g.getMaxPlayers(),
-                    g.getID()
-            });
-        }
+        setTableData(gList);
     }
 
     @Override

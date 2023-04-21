@@ -4,7 +4,10 @@ import model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -15,10 +18,10 @@ public class GameDataView {
     private ReviewListener revListener;
     private SwitchTabListener stListener;
 
-    private DefaultTableModel tableModel =  new DefaultTableModel() { @Override public boolean isCellEditable(int row, int column) { return false; } };
+    private final HashMap<Integer, Image> loadedGameImages;
     private Game currentGameOnScreen;
-    private HashMap<Integer, Image> loadedGameImages;
 
+    private final ReviewTableModel tableModel;
     private JPanel gameDataPanel;
     private JLabel gameName;
     private JScrollPane scrollPane;
@@ -26,66 +29,114 @@ public class GameDataView {
     private JTextPane infoTextPane;
     private JTable reviewTable;
     private JSlider ratingSlider;
-    private JTextArea ratingTextBox;
+    private JTextArea reviewTextBox;
     private JButton ratingSubmitButton;
     private JButton addGameToCollectionButton;
     private JLabel ratingValue;
     private JComboBox<String> collectionList;
+    private JPanel headerPanel;
+    private JScrollPane reviewScrollPane;
+    private JLabel leaveReviewLabel;
+    private JLabel ratingLabel;
+    private JPanel reviewPanel;
+    private JPanel collectionButtonPanel;
 
     public GameDataView() {
         loadedGameImages = new HashMap<>();
 
-        tableModel.addColumn("Rating");
-        tableModel.addColumn("Review");
-        tableModel.addColumn("User");
+        // Header panel
+        headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+        gameName.setFont(gameName.getFont().deriveFont(Font.BOLD, 72f));
 
+        // Review Table
+        tableModel = new ReviewTableModel();
         reviewTable.setModel(tableModel);
 
-        reviewTable.getColumnModel().getColumn(0).setPreferredWidth(20);
-        reviewTable.getColumnModel().getColumn(0).setCellRenderer(new RatingCellRenderer());
-        reviewTable.setRowHeight(30);
+        TableColumnModel tcm = reviewTable.getColumnModel();
+
+        tcm.getColumn(0).setMinWidth(100);
+        tcm.getColumn(0).setMaxWidth(100);
+        tcm.getColumn(0).setCellRenderer(new RatingCellRenderer());
+
+        tcm.getColumn(1).setMinWidth(800);
+        tcm.getColumn(1).setCellRenderer(new ReviewRenderer());
+
         reviewTable.getTableHeader().setReorderingAllowed(false);
 
+        // Game info text
+        infoTextPane.setFont(infoTextPane.getFont().deriveFont(20f));
+        StyledDocument doc = infoTextPane.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+        // Leave review section
+        leaveReviewLabel.setFont(leaveReviewLabel.getFont().deriveFont(Font.BOLD, 20));
+        leaveReviewLabel.setText("Leave Review:");
+        leaveReviewLabel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.gray));
+        ratingLabel.setFont(ratingLabel.getFont().deriveFont(Font.BOLD, 20));
+        ratingLabel.setText("Rating:");
+        ratingLabel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.gray));
+        ratingSubmitButton.setFont(ratingSubmitButton.getFont().deriveFont(20f));
+        ratingSubmitButton.setText("Add Review");
+
+        // Add review behavior
         ratingSubmitButton.addActionListener(e -> {
             int rating = ratingSlider.getValue();
-            String reviewText = ratingTextBox.getText();
+            String reviewText = reviewTextBox.getText().trim();
 
             ratingSlider.setValue(10);
-            ratingTextBox.setText("");
+            reviewTextBox.setText("");
 
             Review review = new Review(rating, reviewText, currentGameOnScreen.getID(), UserDataManager.currentUser.getUserName());
 
             //Add review to game object
             currentGameOnScreen.addReview(review);
 
-            //Add review to screen
-            tableModel.addRow(new Object[]{(float) rating, reviewText, UserDataManager.currentUser.getUserName()});
+            //Add review to review table
+            tableModel.addReview(review);
 
             //Save review to XML
             UserDataManager.saveReview(review);
 
             //Update on-screen rating
-            ratingValue.setIcon(new RatingIcon(currentGameOnScreen.getRating()));
+            ratingValue.setIcon(new RatingIcon(currentGameOnScreen.getRating(), 100, 100));
 
             // Notify game tables to update review data for this game
             revListener.updateTableData(currentGameOnScreen);
-
         });
 
+        // Add game to collection button
+        addGameToCollectionButton.setFont(addGameToCollectionButton.getFont().deriveFont(20f));
         addGameToCollectionButton.setText("Login to Use Collections");
         addGameToCollectionButton.addActionListener(e -> stListener.switchTab(2, currentGameOnScreen));
+
+        // Collection menu
+        collectionList.setFont(collectionList.getFont().deriveFont(16f));
+        collectionList.setPreferredSize(addGameToCollectionButton.getPreferredSize());
     }
 
     public void setGame(Game g) {
-
-        tableModel.setRowCount(0);
-
         currentGameOnScreen = g;
 
-        gameName.setText(g.getName());
-        ratingValue.setIcon(new RatingIcon(g.getRating()));
+        // Set table data
+        tableModel.setTableData(g);
 
-        // Set Game Image
+        // Un-sort the reviews
+        reviewTable.getRowSorter().setSortKeys(null);
+
+        // Set game rating icon
+        ratingValue.setIcon(new RatingIcon(g.getRating(), 100, 100));
+
+        // Set title game text
+        gameName.setText(g.getName());
+
+        // Adjust font size to comfortably fit screen
+        float fontSize = 72;
+        while (gameName.getPreferredSize().width > 1200)
+            gameName.setFont(gameName.getFont().deriveFont(--fontSize));
+
+        // Set game Image
         ImageIcon imageIcon = null;
 
         // Game image has already been loaded
@@ -97,6 +148,8 @@ public class GameDataView {
             try {
                 URL url = new URL(g.getFullSizeImage());
                 Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
+                if (scaledImage.getWidth(null) > 600)
+                    scaledImage = scaledImage.getScaledInstance(600, -1, Image.SCALE_FAST);
                 loadedGameImages.put(g.getID(), scaledImage);
                 imageIcon = new ImageIcon(scaledImage);
             }
@@ -107,6 +160,8 @@ public class GameDataView {
                 try {
                     URL url = new URL(g.getThumbnail());
                     Image scaledImage = ImageIO.read(url).getScaledInstance(-1, 450, Image.SCALE_FAST);
+                    if (scaledImage.getWidth(null) > 600)
+                        scaledImage = scaledImage.getScaledInstance(600, -1, Image.SCALE_FAST);
                     loadedGameImages.put(g.getID(), scaledImage);
                     imageIcon = new ImageIcon(scaledImage);
                 }
@@ -121,12 +176,22 @@ public class GameDataView {
         }
         imageLabel.setIcon(imageIcon);
 
-        // Set the game info text
-        infoTextPane.setText("Player Count: " + g.getMinPlayers() + " - " + g.getMaxPlayers() + "\nPlaying Time: " + g.getPlayingTime() + " min" + "\nYear Published: " + g.getYearPublished());
+        scrollPane.setPreferredSize(new Dimension(-1, imageIcon.getIconHeight()));
+        scrollPane.setMinimumSize(new Dimension(-1, imageIcon.getIconHeight()));
+        scrollPane.setMaximumSize(new Dimension(-1, imageIcon.getIconHeight()));
+        // Calculate icon width
+        int iconWidth = (imageIcon == null) ? 100 : imageIcon.getIconWidth();
 
-        // Populate Reviews
-        for (Review r : g.getReviewList())
-            tableModel.addRow(new Object[]{(float) r.getRating(), r.getReviewText(), r.getUserName()});
+        // Calculate max height of info pane
+        String infoText = "Player Count: " + g.getMinPlayers() + " - " + g.getMaxPlayers() + "\nPlaying Time: " + g.getPlayingTime() + " min" + "\nYear Published: " + g.getYearPublished();
+        JTextPane dummyPane = new JTextPane();
+        dummyPane.setSize(iconWidth, Short.MAX_VALUE);
+        dummyPane.setFont(infoTextPane.getFont());
+        dummyPane.setText(infoText);
+        infoTextPane.setMinimumSize(new Dimension(iconWidth, dummyPane.getPreferredSize().height));
+        infoTextPane.setPreferredSize(new Dimension(iconWidth, dummyPane.getPreferredSize().height));
+        infoTextPane.setMaximumSize(new Dimension(iconWidth, dummyPane.getPreferredSize().height));
+        infoTextPane.setText(infoText);
 
         // Enable/disable the add to collection button and populate the dropdown with collections
         updateCollectionsMenu();

@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class RatingIcon implements Icon {
-    private final int width = 50;
-    private final int height = 50;
+    private final int width;
+    private final int height;
     private String rating;
     private final Color color;
     private static final Color GREEN = new Color(29, 128, 76);
@@ -15,7 +15,10 @@ public class RatingIcon implements Icon {
     private static final Color RED = new Color(215, 25, 37);
     private static final Color GREY = new Color(102, 110, 117);
 
-    public RatingIcon(float numRating) {
+    public RatingIcon(float numRating, int width, int height) {
+        this.width = width;
+        this.height = height;
+
         rating = String.format("%.1f", numRating);
         if (numRating == 10)        rating = "10";
         if (numRating >= 8)         color = GREEN;
@@ -31,7 +34,7 @@ public class RatingIcon implements Icon {
         g2.setColor(color);
         g2.drawRect(x, y, width, height);
         g2.fillRect(x, y, width, height);
-        g2.setFont(c.getFont().deriveFont(Font.BOLD, 24));
+        g2.setFont(c.getFont().deriveFont(Font.BOLD, (float) width/2 - 1));
         g2.setColor(Color.WHITE);
         Rectangle2D bounds = g2.getFont().getStringBounds(rating, g2.getFontRenderContext());
 
