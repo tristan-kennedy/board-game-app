@@ -228,16 +228,23 @@ public class GameDataView {
         }
         // Logged in - Change button to default functionality
         else {
-            for (GameCollection c : u.getCollectionList())
-                collectionMenu.addItem(c.getName());
-            addGameToCollectionButton.setText("Add To Collection");
-            collectionMenu.setEnabled(true);
-            addGameToCollectionButton.addActionListener(e -> {
-                String collectionSelection = (String) collectionMenu.getSelectedItem();
-                UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
-                addGameToCollectionButton.setText("Game Added!");
-                addGameToCollectionButton.setEnabled(false);
-            });
+            addGameToCollectionButton.setText("Add Game To Collection");
+            if (u.getCollectionList().size() > 0) {
+                collectionMenu.setEnabled(true);
+                for (GameCollection c : u.getCollectionList())
+                    collectionMenu.addItem(c.getName());
+                addGameToCollectionButton.addActionListener(e -> {
+                    String collectionSelection = (String) collectionMenu.getSelectedItem();
+                    UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
+                    addGameToCollectionButton.setText("Game Added!");
+                    addGameToCollectionButton.setEnabled(false);
+                });
+            }
+            else {
+                collectionMenu.setEnabled(false);
+                addGameToCollectionButton.setText("Create New Collection");
+                addGameToCollectionButton.addActionListener(e -> stListener.switchTab(3, currentGameOnScreen));
+            }
         }
     }
 
