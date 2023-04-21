@@ -21,14 +21,14 @@ public class LoginView {
     private JLabel errorLabel;
     private JButton logoutButton;
 
-    public JPanel getPanel() {
-        return loginPanel;
-    }
-
+    /**
+     * Constructs a LoginView with no user logged in
+     */
     public LoginView() {
         clearText(); // Forces the error text to take up space on the screen
         logListeners = new ArrayList<>();
 
+        // Login functionality
         loginButton.addActionListener(e -> {
             String userName = usernameTextField.getText();
             String password = new String(passwordTextField.getPassword());
@@ -52,6 +52,7 @@ public class LoginView {
             }
         });
 
+        // Create account functionality
         createAccountButton.addActionListener(e -> {
             String userName = usernameTextField.getText();
             String password = new String(passwordTextField.getPassword());
@@ -70,7 +71,9 @@ public class LoginView {
             }
         });
 
+        // Logout functionality
         logoutButton.addActionListener(e -> {
+            // Prompt save popup
             JFrame frame = new JFrame();
             String message = "Would you like to save your collections changes?";
             int answer = JOptionPane.showConfirmDialog(frame, message);
@@ -89,14 +92,30 @@ public class LoginView {
         });
     }
 
+    /**
+     * Returns the login panel
+     * @return the login panel
+     */
+    public JPanel getPanel() {
+        return loginPanel;
+    }
+
+    /**
+     * Adds the specified login/logout listener
+     * @param logListener the listener to be added
+     */
     public void addLoginLogoutListener(LoginLogoutListener logListener) {
         logListeners.add(logListener);
     }
 
+    /**
+     * Clears the error text. Can be called on a tab switch so that error text doesn't linger after clicking away
+     */
     public void clearText() {
         errorLabel.setText(" ");
     }
 
+    // Inverts the state of all buttons
     private void updateButtons() {
         boolean isLoggingIn = loginButton.isEnabled();
         // Login & Create Account buttons should always be opposite the Logout button
@@ -106,6 +125,7 @@ public class LoginView {
         logoutButton.setEnabled(isLoggingIn);
     }
 
+    // Checks if a provided username and password are not empty and updates error text if empty
     private boolean isNotEmpty(String username, String password) {
         if (username.length() == 0) {
             errorLabel.setForeground(RED);
