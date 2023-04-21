@@ -33,7 +33,7 @@ public class GameDataView {
     private JButton ratingSubmitButton;
     private JButton addGameToCollectionButton;
     private JLabel ratingValue;
-    private JComboBox<String> collectionList;
+    private JComboBox<String> collectionMenu;
     private JPanel headerPanel;
     private JScrollPane reviewScrollPane;
     private JLabel leaveReviewLabel;
@@ -112,8 +112,8 @@ public class GameDataView {
         addGameToCollectionButton.addActionListener(e -> stListener.switchTab(2, currentGameOnScreen));
 
         // Collection menu
-        collectionList.setFont(collectionList.getFont().deriveFont(16f));
-        collectionList.setPreferredSize(addGameToCollectionButton.getPreferredSize());
+        collectionMenu.setFont(collectionMenu.getFont().deriveFont(16f));
+        collectionMenu.setPreferredSize(addGameToCollectionButton.getPreferredSize());
     }
 
     public void setGame(Game g) {
@@ -195,11 +195,25 @@ public class GameDataView {
 
         // Enable/disable the add to collection button and populate the dropdown with collections
         updateCollectionsMenu();
+
+        collectionMenu.addActionListener(e -> {
+            String collectionSelection = (String) collectionMenu.getSelectedItem();
+            if (collectionSelection == null) { addGameToCollectionButton.setEnabled(false); }
+            else {
+                if (UserDataManager.currentUser.getGameCollectionByName(collectionSelection).hasGame(g)) {
+                    addGameToCollectionButton.setText("Already in Collection");
+                    addGameToCollectionButton.setEnabled(false);
+                } else {
+                    addGameToCollectionButton.setText("Add To Collection");
+                    addGameToCollectionButton.setEnabled(true);
+                }
+            }
+        });
     }
 
     public void updateCollectionsMenu() {
         // Empty Collection List
-        collectionList.removeAllItems();
+        collectionMenu.removeAllItems();
 
         // Clear all button listeners
         for (ActionListener l : addGameToCollectionButton.getActionListeners())
@@ -208,19 +222,21 @@ public class GameDataView {
         User u = UserDataManager.currentUser;
         // Not logged in - Change button to switch to login page
         if (u.getUserName().equals("Guest")) {
-            collectionList.setEnabled(false);
+            collectionMenu.setEnabled(false);
             addGameToCollectionButton.setText("Login to Use Collections");
             addGameToCollectionButton.addActionListener(e -> stListener.switchTab(2, currentGameOnScreen));
         }
         // Logged in - Change button to default functionality
         else {
             for (GameCollection c : u.getCollectionList())
-                collectionList.addItem(c.getName());
-            collectionList.setEnabled(true);
+                collectionMenu.addItem(c.getName());
             addGameToCollectionButton.setText("Add To Collection");
+            collectionMenu.setEnabled(true);
             addGameToCollectionButton.addActionListener(e -> {
-                String collectionSelection = (String) collectionList.getSelectedItem();
+                String collectionSelection = (String) collectionMenu.getSelectedItem();
                 UserDataManager.currentUser.getGameCollectionByName(collectionSelection).addGame(currentGameOnScreen);
+                addGameToCollectionButton.setText("Game Added!");
+                addGameToCollectionButton.setEnabled(false);
             });
         }
     }
