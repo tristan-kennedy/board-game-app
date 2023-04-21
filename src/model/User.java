@@ -2,6 +2,9 @@ package src.model;
 
 import java.util.ArrayList;
 
+/**
+ * Container class which contains the data for a single user
+ */
 public class User {
 
     private ArrayList<GameCollection> collectionList;
@@ -32,16 +35,16 @@ public class User {
     /**
      * Returns the ArrayList of GameCollections that the user has
      *
-     * @return ArrayList<GameCollection> collectionList
+     * @return ArrayList collectionList
      */
     public ArrayList<GameCollection> getCollectionList() {
         return collectionList;
     }
 
     /**
-     * Adds a collection to th User's list of collections
-     *
+     * Adds a collection to the users collections
      * @param collection GameCollection
+     * @return True if the collection was added successfully false otherwise
      */
     public boolean addCollection(GameCollection collection) {
         if (!hasCollection(collection.getName())){

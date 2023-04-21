@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <BoardGameAppUserData>
-    <userList/>
+    <userList>
+        <user password="abc123" userName="Tristan">
+            <gameCollection name="New Collection">
+                <game id="177736"/>
+                <game id="281946"/>
+                <game id="381626"/>
+            </gameCollection>
+        </user>
+        <user password="a" userName="a">
+            <gameCollection name="a">
+                <game id="173346"/>
+            </gameCollection>
+        </user>
+        <user password="beth" userName="beth"/>
+        <user password="tdu" userName="tdu">
+            <gameCollection name="new c">
+                <game id="177736"/>
+                <game id="173346"/>
+            </gameCollection>
+        </user>
+    </userList>
     <reviewList/>
 </BoardGameAppUserData>

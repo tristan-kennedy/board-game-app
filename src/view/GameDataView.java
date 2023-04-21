@@ -13,14 +13,15 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * View class which displays data about an individual game, allows reviews and adding to collection.
+ */
 public class GameDataView {
 
     private ReviewListener revListener;
     private SwitchTabListener stListener;
-
     private final HashMap<Integer, Image> loadedGameImages;
     private Game currentGameOnScreen;
-
     private final ReviewTableModel tableModel;
     private JPanel gameDataPanel;
     private JLabel gameName;
@@ -41,6 +42,9 @@ public class GameDataView {
     private JPanel reviewPanel;
     private JPanel collectionButtonPanel;
 
+    /**
+     * Default constructor creates an empty GameDataView page
+     */
     public GameDataView() {
         loadedGameImages = new HashMap<>();
 
@@ -117,6 +121,10 @@ public class GameDataView {
         collectionMenu.setPreferredSize(addGameToCollectionButton.getPreferredSize());
     }
 
+    /**
+     * setGame sets the current game on the view
+     * @param g Game
+     */
     public void setGame(Game g) {
         currentGameOnScreen = g;
 
@@ -199,6 +207,9 @@ public class GameDataView {
 
     }
 
+    /**
+     * Enables or disables the collections menu/button depending on currentUser status
+     */
     public void updateCollectionsPanel() {
         // Empty Collection List
         collectionMenu.removeAllItems();
@@ -264,14 +275,26 @@ public class GameDataView {
         }
     }
 
+    /**
+     * Gets the main panel for the GameDataView to get added to the MainView
+     * @return gameDataPanel JPanel
+     */
     public JPanel getPanel() {
         return gameDataPanel;
     }
 
+    /**
+     * Adds the ability for this tab to be switched to
+     * @param stl SwitchTabListener
+     */
     public void addSwitchTabListener(SwitchTabListener stl) {
         stListener = stl;
     }
 
+    /**
+     * Updates MainView when a review is added on this page
+     * @param rl ReviewListener
+     */
     public void addReviewListener(ReviewListener rl) {
         revListener = rl;
     }

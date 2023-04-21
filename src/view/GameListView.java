@@ -16,6 +16,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+/**
+ * View class which displays a list of games and allows for search and sort functionality
+ */
 public class GameListView {
 
     private SwitchTabListener listener;
@@ -37,12 +40,13 @@ public class GameListView {
 
     /**
      * Constructs a GameListView and its sorted table from a gameList
+     *
      * @param gameList the gameList to create the table from
      */
     public GameListView(GameList gameList) {
         gList = gameList;
 
-        gameTable.setMinimumSize(new Dimension(750,750));
+        gameTable.setMinimumSize(new Dimension(750, 750));
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.getTableHeader().setResizingAllowed(false);
         gameTable.setSelectionBackground(ImageCellRenderer.GREY_SELECTED);
@@ -107,6 +111,7 @@ public class GameListView {
                     searchBox.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (searchBox.getText().isEmpty()) {
@@ -120,11 +125,12 @@ public class GameListView {
             String filter = (String) searchFilter.getSelectedItem();
             String text = searchBox.getText().toLowerCase();
 
-            text = FuzzySearchConvertor.fuzzyCorrect(text); // Converts search string to "fuzzy" string
-            searchBox.setText(text.substring(0,1).toUpperCase() + text.substring(1)); // Capitalizes the search term
+            String fuzzyText = FuzzySearchConvertor.fuzzyCorrect(text); // Converts search string to "fuzzy" string
+            searchBox.setText(text.substring(0, 1).toUpperCase() + text.substring(1)); // Capitalizes the search term
 
             // Ignore case for matching
             Pattern pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
+            Pattern fuzzyPattern = Pattern.compile(fuzzyText, Pattern.CASE_INSENSITIVE);
 
             RowFilter<GameTableModel, Integer> rf = null;
 
@@ -134,7 +140,9 @@ public class GameListView {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         String name = entry.getModel().getValueAt(entry.getIdentifier(), 1).toString();
-                        return pattern.matcher(name).find();
+                        if (pattern.matcher(name).find()) return true;
+                        else if (fuzzyPattern.matcher(name).find()) return true;
+                        return false;
                     }
                 };
                 // Category option selected
@@ -142,8 +150,10 @@ public class GameListView {
                     @Override
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         Game g = gList.getGame((int) entry.getModel().getValueAt(entry.getIdentifier(), 4));
-                        for (String category : g.getCategoryList())
+                        for (String category : g.getCategoryList()) {
                             if (pattern.matcher(category).find()) return true;
+                            else if (fuzzyPattern.matcher(category).find()) return true;
+                        }
                         return false;
                     }
                 };
@@ -153,8 +163,10 @@ public class GameListView {
                     public boolean include(Entry<? extends GameTableModel, ? extends Integer> entry) {
                         Object[] tableRow = entry.getModel().getRow(entry.getIdentifier());
                         Game g = gList.getGame((int) tableRow[4]);
-                        for (String mechanic : g.getMechanicList())
+                        for (String mechanic : g.getMechanicList()) {
                             if (pattern.matcher(mechanic).find()) return true;
+                            else if (fuzzyPattern.matcher(mechanic).find()) return true;
+                        }
                         return false;
                     }
                 };
@@ -166,6 +178,7 @@ public class GameListView {
 
     /**
      * Returns the gameListPanel
+     *
      * @return the gameListPanel
      */
     public JPanel getPanel() {
@@ -174,6 +187,7 @@ public class GameListView {
 
     /**
      * Adds a switch tab listener
+     *
      * @param stl the switch tab listener to be added
      */
     public void addSwitchTabListener(SwitchTabListener stl) {
@@ -182,6 +196,7 @@ public class GameListView {
 
     /**
      * Sets the table to a different gameList. Can also be used with the same gameList to refresh the table
+     *
      * @param gameList the gameList to be shown in the table
      */
     public void setTable(GameList gameList) {
@@ -190,6 +205,7 @@ public class GameListView {
 
     /**
      * Returns the currently used JTable
+     *
      * @return the currently used JtTable
      */
     public JTable getCurrentTable() {
@@ -198,6 +214,7 @@ public class GameListView {
 
     /**
      * Updates the table data for a specific game (usually for after a new review is added)
+     *
      * @param g the game whose table data should be updated
      */
     public void updateTableData(Game g) {

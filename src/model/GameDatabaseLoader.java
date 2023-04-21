@@ -24,6 +24,10 @@ import javax.xml.stream.events.XMLEvent;
 public final class GameDatabaseLoader {
 
     private static String gameFilepath;
+
+    /**
+     * mainList contains all the games in the data
+     */
     public static GameList mainList;
 
     private GameDatabaseLoader() {}

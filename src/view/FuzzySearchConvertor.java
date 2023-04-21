@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * Utility class responsible for the fuzzy search algorithm
+ */
 public final class FuzzySearchConvertor {
 
     private static final String ABC = "abcdefghijklmnopqrstuvwxyz";

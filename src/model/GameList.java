@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * List of games with extended functionality
+ */
 public class GameList implements Iterable<Game> {
 
+    /**
+     * Contains the list of games in the GameList
+     */
     protected ArrayList<Game> gameList;
     private final HashMap<Integer, Game> gameMap;
 
@@ -18,9 +24,9 @@ public class GameList implements Iterable<Game> {
     }
 
     /**
-     * Adds a Game to the GameList
-     *
-     * @param g the Game to be added
+     * Adds a game to the list
+     * @param g Game
+     * @return boolean True if add was successful False otherwise
      */
     public boolean addGame(Game g) {
         if(hasGame(g))
@@ -51,6 +57,11 @@ public class GameList implements Iterable<Game> {
         return gameList.iterator();
     }
 
+    /**
+     * Checks if the gameList has the game
+     * @param testGame Game
+     * @return True if the gameList has the game false otherwise
+     */
     public boolean hasGame(Game testGame) {
         for(Game game : gameList)
             if(game.equals(testGame))

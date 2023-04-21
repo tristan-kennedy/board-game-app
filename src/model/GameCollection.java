@@ -1,5 +1,8 @@
 package src.model;
 
+/**
+ * Type of GameList which also has a name and can have games removed from it.
+ */
 public class GameCollection extends GameList {
 
     private String name;

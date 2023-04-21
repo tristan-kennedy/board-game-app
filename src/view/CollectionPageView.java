@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * View class which displays the current user's collections and the contents of the collections
+ */
 public class CollectionPageView {
 
     private GameCollection currentlyDisplayedCollection;
@@ -36,6 +39,9 @@ public class CollectionPageView {
         collectionGameListViewPanel = gameListView.getPanel();
     }
 
+    /**
+     * Default constructor constructs a collectionPageView with a null currently displayed collection and user
+     */
     public CollectionPageView() {
         currentlyDisplayedCollection = null;
 
@@ -72,16 +78,24 @@ public class CollectionPageView {
             @Override
             public void paintIcon(Component c, Graphics g, int x, int y) {
                 Graphics2D g2 = (Graphics2D) g;
-                int off = height/2;
+                int off = height / 2;
                 // Vertical Lines
-                g2.drawLine(off, off-6, off, off+5);
-                g2.drawLine(off-1, off-6, off-1, off+5);
+                g2.drawLine(off, off - 6, off, off + 5);
+                g2.drawLine(off - 1, off - 6, off - 1, off + 5);
                 // Horizontal Lines
-                g2.drawLine(off-6, off, off+5, off);
-                g2.drawLine(off-6, off-1, off+5, off-1);
+                g2.drawLine(off - 6, off, off + 5, off);
+                g2.drawLine(off - 6, off - 1, off + 5, off - 1);
             }
-            @Override public int getIconWidth() { return 11; }
-            @Override public int getIconHeight() { return 11; }
+
+            @Override
+            public int getIconWidth() {
+                return 11;
+            }
+
+            @Override
+            public int getIconHeight() {
+                return 11;
+            }
         });
         addCollectionButton.setHorizontalAlignment(JLabel.CENTER);
         addCollectionButton.addActionListener(e -> {
@@ -129,6 +143,11 @@ public class CollectionPageView {
         collectionsTable.setRowHeight(60);
     }
 
+    /**
+     * Sets the current user of the collections page to the user parameter
+     *
+     * @param user User
+     */
     public void setCurrentUser(User user) {
         tableModel.setRowCount(0);
         for (GameCollection c : user.getCollectionList())
@@ -137,18 +156,36 @@ public class CollectionPageView {
         currentlyDisplayedCollection = null;
     }
 
+    /**
+     * Returns the main JPanel for the CollectionPage
+     *
+     * @return JPanel
+     */
     public JPanel getPanel() {
         return collectionPagePanel;
     }
 
+    /**
+     * Adds the switchTabListener to allow for the tab to be switched away
+     *
+     * @param tsl SwitchTabListener
+     */
     public void addSwitchTabListener(SwitchTabListener tsl) {
         gameListView.addSwitchTabListener(tsl);
     }
 
+    /**
+     * Updates the current data in the table
+     *
+     * @param g Game
+     */
     public void updateTableData(Game g) {
         gameListView.updateTableData(g);
     }
 
+    /**
+     * Refreshes the currently displayed table
+     */
     public void refreshTable() {
         if (currentlyDisplayedCollection != null)
             gameListView.setTable(currentlyDisplayedCollection);

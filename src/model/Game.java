@@ -2,6 +2,9 @@ package src.model;
 
 import java.util.ArrayList;
 
+/**
+ * Container class which contains all of the data for one specific game
+ */
 public class Game {
 
     private final int id;
@@ -181,12 +184,17 @@ public class Game {
     /**
      * Returns the list of reviews associated with a game
      *
-     * @return reviewList ArrayList<Review>
+     * @return reviewList ArrayList
      */
     public ArrayList<Review> getReviewList() {
         return reviewList;
     }
 
+    /**
+     * Implements .equals for a game
+     * @param testGame Game
+     * @return boolean true if the games are the same game false otherwise
+     */
     public boolean equals(Game testGame) {
         return id == testGame.id;
     }

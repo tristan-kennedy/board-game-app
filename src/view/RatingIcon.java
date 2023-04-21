@@ -5,6 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Custom review icon for ratings
+ */
 public class RatingIcon implements Icon {
     private final int width;
     private final int height;
@@ -15,6 +18,12 @@ public class RatingIcon implements Icon {
     private static final Color RED = new Color(215, 25, 37);
     private static final Color GREY = new Color(102, 110, 117);
 
+    /**
+     * Creates a custom rating icon based upon parameters
+     * @param numRating float
+     * @param width int
+     * @param height int
+     */
     public RatingIcon(float numRating, int width, int height) {
         this.width = width;
         this.height = height;

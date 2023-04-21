@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * View class which displays a login, logout, and create account system
+ */
 public class LoginView {
 
     private static final Color GREEN = new Color(15, 92, 35);
@@ -94,6 +97,7 @@ public class LoginView {
 
     /**
      * Returns the login panel
+     *
      * @return the login panel
      */
     public JPanel getPanel() {
@@ -102,6 +106,7 @@ public class LoginView {
 
     /**
      * Adds the specified login/logout listener
+     *
      * @param logListener the listener to be added
      */
     public void addLoginLogoutListener(LoginLogoutListener logListener) {

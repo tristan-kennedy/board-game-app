@@ -7,6 +7,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 
+/**
+ * TableCellRenderer for the review table on GameDataView
+ */
 public class ReviewRenderer implements TableCellRenderer {
     private static final int MIN_ROW_HEIGHT = 80;
     private static final int COLUMN_WIDTH = 800;

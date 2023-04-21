@@ -7,7 +7,16 @@ import src.view.MainView;
 
 import javax.swing.*;
 
+/**
+ * Main responsible for running the program, creates necessary view/model classes and adds them to a frame
+ */
 public class Main {
+
+    /**
+     * Main
+     *
+     * @param args String[]
+     */
     public static void main(String[] args) {
 
         GameDatabaseLoader.initializeFile();

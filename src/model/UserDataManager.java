@@ -19,12 +19,20 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
 
+/**
+ * Utility singleton which reads and writes our data to an XML file, filepath determined by config.txt
+ */
 public final class UserDataManager {
 
     private static String userFilepath;
+
+    /**
+     * Current user of the program
+     */
     public static User currentUser;
 
-    private UserDataManager() {}
+    private UserDataManager() {
+    }
 
     /**
      * Initializes the userFilePath based upon config.txt
@@ -154,7 +162,7 @@ public final class UserDataManager {
      * @return Boolean true if account creation success, false otherwise
      */
     public static Boolean createAccount(String userName, String password) {
-        if(userName.equals("Guest"))
+        if (userName.equals("Guest"))
             return false;
 
         //Call to private class which initializes an XML Doc
@@ -217,7 +225,7 @@ public final class UserDataManager {
             String testName = user.getAttributes().getNamedItem("userName").getTextContent();
             if (currentUser.getUserName().equals(testName)) {
                 //Clearing the list before adding new things to it
-                while(user.hasChildNodes())
+                while (user.hasChildNodes())
                     user.removeChild(user.getFirstChild());
 
                 for (GameCollection c : currentUser.getCollectionList()) {

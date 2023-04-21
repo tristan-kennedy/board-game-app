@@ -6,8 +6,11 @@ import src.model.Review;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
+/**
+ * tableModel for review data
+ */
 class ReviewTableModel extends AbstractTableModel {
-    private final String[] columnNames = { "Rating", "Review" };
+    private final String[] columnNames = {"Rating", "Review"};
     private ArrayList<Object[]> tableData;
 
     public ReviewTableModel() {
@@ -47,7 +50,7 @@ class ReviewTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public void setTableData(Game g){
+    public void setTableData(Game g) {
         tableData = new ArrayList<>();
         for (Review r : g.getReviewList())
             tableData.add(new Object[]{(float) r.getRating(), r.getReviewText(), r.getUserName()});

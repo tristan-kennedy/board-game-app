@@ -7,6 +7,9 @@ import src.model.UserDataManager;
 
 import javax.swing.*;
 
+/**
+ * View class which contains all of the other view classes in a tabbed pane
+ */
 public class MainView implements SwitchTabListener, LoginLogoutListener, ReviewListener {
 
     private GameListView gameListView;
@@ -63,8 +66,9 @@ public class MainView implements SwitchTabListener, LoginLogoutListener, ReviewL
 
     /**
      * Used by individual tab classes to request tab changes
+     *
      * @param switchTabTo the index of the tab to switch to
-     * @param g the game to set the game details page to
+     * @param g           the game to set the game details page to
      */
     @Override
     public void switchTab(int switchTabTo, Game g) {
@@ -100,6 +104,7 @@ public class MainView implements SwitchTabListener, LoginLogoutListener, ReviewL
 
     /**
      * Updates all gameListView tables' data on the specified game, usually as a response to a new review being created
+     *
      * @param g the game whose data should be updated
      */
     @Override
@@ -110,6 +115,7 @@ public class MainView implements SwitchTabListener, LoginLogoutListener, ReviewL
 
     /**
      * Returns the main view panel to be added to a JFrame
+     *
      * @return the main view panel
      */
     public JPanel getMainPanel() {

@@ -1,5 +1,8 @@
 package src.model;
 
+/**
+ * Container class which has all the data necessary for a single review
+ */
 public class Review {
 
     private final Integer rating;

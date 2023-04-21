@@ -9,6 +9,9 @@ import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * TableCellRenderer which allows for custom nameplates in the GameListView
+ */
 public class GameNameRenderer implements TableCellRenderer {
     private static final Pattern YEAR_PATTERN = Pattern.compile("\\(");
     private static final int COLUMN_WIDTH = 400;

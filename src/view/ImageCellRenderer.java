@@ -6,8 +6,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * TableCellRenderer which allows for the thumbnails to be rendered in the table
+ */
 public class ImageCellRenderer extends DefaultTableCellRenderer {
 
+    /**
+     * Grey color used in table selection
+     */
     public static final Color GREY_SELECTED = new Color(220, 220, 220);
 
     @Override
