@@ -186,4 +186,8 @@ public class Game {
     public ArrayList<Review> getReviewList() {
         return reviewList;
     }
+
+    public boolean equals(Game testGame) {
+        return id == testGame.id;
+    }
 }

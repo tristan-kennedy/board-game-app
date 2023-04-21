@@ -54,7 +54,7 @@ public class MainView implements SwitchTabListener, LoginLogoutListener, ReviewL
         // Update necessary tabs on switch
         tabbedPane.addChangeListener(e -> {
             switch (tabbedPane.getSelectedIndex()) {
-                case 1 -> gameDataView.updateCollectionsMenu();
+                case 1 -> gameDataView.updateCollectionsPanel();
                 case 3 -> collectionPageView.refreshTable();
             }
             loginView.clearText();

@@ -53,9 +53,8 @@ public class GameList implements Iterable<Game> {
 
     public boolean hasGame(Game testGame) {
         for(Game game : gameList)
-            if(game == testGame)
+            if(game.equals(testGame))
                 return true;
         return false;
     }
-
 }
