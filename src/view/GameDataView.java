@@ -85,6 +85,7 @@ public class GameDataView {
             int rating = ratingSlider.getValue();
             String reviewText = reviewTextBox.getText().trim();
 
+            // Reset slider and clear review box
             ratingSlider.setValue(10);
             reviewTextBox.setText("");
 
