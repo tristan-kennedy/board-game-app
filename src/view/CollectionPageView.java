@@ -131,11 +131,10 @@ public class CollectionPageView {
 
     public void setCurrentUser(User user) {
         tableModel.setRowCount(0);
-
         for (GameCollection c : user.getCollectionList())
             tableModel.addRow(new Object[]{c.getName()});
-
         gameListView.setTable(new GameList());
+        currentlyDisplayedCollection = null;
     }
 
     public JPanel getPanel() {
